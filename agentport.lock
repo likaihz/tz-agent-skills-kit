@@ -1,0 +1,10 @@
+version: 1
+generated_at: 2026-05-25T16:01:57.128687+00:00
+created_by: skills-manager/agentport-mvp
+artifacts:
+- id: resource:claude_code:global:command:.claude/commands
+  kind: command
+  content_hash: 3b7c2ef89442e3c3b18d8a91735ee5c710c59be696025d8ab03399ae4787de30
+- id: resource:codex:global:config:.codex/config.toml
+  kind: config
+  content_hash: fd5bddefaa481eef533cc2ba3ad2236f1a7d797b3ed8e26ce47cd366d114c5f6

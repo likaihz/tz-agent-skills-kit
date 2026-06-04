@@ -1,0 +1,1063 @@
+version: 1
+generated_at: 2026-05-25T16:01:57.117239+00:00
+created_by: skills-manager/agentport-mvp
+active_profile: bf6ae8c1-162c-40ef-91f8-c85a07a7ba1d
+repo:
+  layout: skills-root-v1
+  manifest_path: agentport.yaml
+  lock_path: agentport.lock
+artifacts:
+- id: resource:claude_code:global:command:.claude/commands
+  kind: command
+  name: claude_code:global:command
+  path: artifacts/claude_code/global/command/.claude/commands
+  source:
+    type: tool_resource
+    confidence: exact
+    path: .claude/commands
+  owner:
+    type: tool
+    id: claude_code
+  deployed_to:
+  - tool: claude_code
+    path: ~/.claude/commands
+    mode: copy
+    status: active
+- id: resource:codex:global:config:.codex/config.toml
+  kind: config
+  name: codex:global:config
+  path: artifacts/codex/global/config/.codex/config.toml
+  source:
+    type: tool_resource
+    confidence: exact
+    path: .codex/config.toml
+  owner:
+    type: tool
+    id: codex
+  deployed_to:
+  - tool: codex
+    path: ~/.codex/config.toml
+    mode: merge_toml
+    status: active
+tools:
+  adal:
+    display_name: AdaL
+    installed: false
+    enabled: true
+    skills_dir: ~/.adal/skills
+    project_relative_skills_dir: .adal/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.adal/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .adal/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  amp:
+    display_name: Amp
+    installed: false
+    enabled: true
+    skills_dir: ~/.config/agents/skills
+    project_relative_skills_dir: .config/agents/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.config/agents/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .config/agents/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  antigravity:
+    display_name: Antigravity
+    installed: false
+    enabled: true
+    skills_dir: ~/.gemini/antigravity/skills
+    project_relative_skills_dir: .gemini/antigravity/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.gemini/antigravity/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .gemini/antigravity/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  augment:
+    display_name: Augment
+    installed: false
+    enabled: true
+    skills_dir: ~/.augment/skills
+    project_relative_skills_dir: .augment/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.augment/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .augment/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  autoclaw:
+    display_name: AutoClaw
+    installed: false
+    enabled: true
+    skills_dir: ~/.openclaw-autoclaw/skills
+    project_relative_skills_dir: .openclaw-autoclaw/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.openclaw-autoclaw/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .openclaw-autoclaw/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  bob:
+    display_name: IBM Bob
+    installed: false
+    enabled: true
+    skills_dir: ~/.bob/skills
+    project_relative_skills_dir: .bob/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.bob/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .bob/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  claude_code:
+    display_name: Claude Code
+    installed: true
+    enabled: true
+    skills_dir: ~/.claude/skills
+    project_relative_skills_dir: .claude/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.claude/skills
+      deploy: symlink
+      scan: flat
+      exists: true
+    - kind: skill
+      scope: project
+      path: .claude/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: command
+      scope: global
+      path: ~/.claude/commands
+      deploy: copy
+      scan: flat
+      exists: true
+    - kind: hook
+      scope: global
+      path: ~/.claude/hooks
+      deploy: merge_json
+      scan: flat
+      exists: false
+    - kind: mcp_config
+      scope: project
+      path: .mcp.json
+      deploy: merge_json
+      scan: file
+      exists: false
+  cline:
+    display_name: Cline
+    installed: false
+    enabled: true
+    skills_dir: ~/.agents/skills
+    project_relative_skills_dir: .agents/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.agents/skills
+      deploy: symlink
+      scan: flat
+      exists: true
+    - kind: skill
+      scope: project
+      path: .agents/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  codebuddy:
+    display_name: CodeBuddy
+    installed: false
+    enabled: true
+    skills_dir: ~/.codebuddy/skills
+    project_relative_skills_dir: .codebuddy/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.codebuddy/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .codebuddy/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  codex:
+    display_name: Codex
+    installed: true
+    enabled: true
+    skills_dir: ~/.agents/skills
+    project_relative_skills_dir: .codex/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.agents/skills
+      deploy: symlink
+      scan: flat
+      exists: true
+    - kind: skill
+      scope: project
+      path: .codex/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: config
+      scope: global
+      path: ~/.codex/config.toml
+      deploy: merge_toml
+      scan: file
+      exists: true
+  command_code:
+    display_name: Command Code
+    installed: false
+    enabled: true
+    skills_dir: ~/.commandcode/skills
+    project_relative_skills_dir: .commandcode/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.commandcode/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .commandcode/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  continue:
+    display_name: Continue
+    installed: false
+    enabled: true
+    skills_dir: ~/.continue/skills
+    project_relative_skills_dir: .continue/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.continue/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .continue/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  cortex:
+    display_name: Cortex Code
+    installed: false
+    enabled: true
+    skills_dir: ~/.snowflake/cortex/skills
+    project_relative_skills_dir: .snowflake/cortex/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.snowflake/cortex/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .snowflake/cortex/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  crush:
+    display_name: Crush
+    installed: false
+    enabled: true
+    skills_dir: ~/.config/crush/skills
+    project_relative_skills_dir: .config/crush/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.config/crush/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .config/crush/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  cursor:
+    display_name: Cursor
+    installed: false
+    enabled: true
+    skills_dir: ~/.cursor/skills
+    project_relative_skills_dir: .cursor/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.cursor/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .cursor/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: mcp_config
+      scope: global
+      path: ~/.cursor/mcp.json
+      deploy: merge_json
+      scan: file
+      exists: false
+    - kind: rule
+      scope: project
+      path: .cursor/rules
+      deploy: copy
+      scan: recursive
+      exists: false
+  deepagents:
+    display_name: Deep Agents
+    installed: false
+    enabled: true
+    skills_dir: ~/.deepagents/agent/skills
+    project_relative_skills_dir: .deepagents/agent/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.deepagents/agent/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .deepagents/agent/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  droid:
+    display_name: Droid
+    installed: false
+    enabled: true
+    skills_dir: ~/.factory/skills
+    project_relative_skills_dir: .factory/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.factory/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .factory/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  easyclaw:
+    display_name: EasyClaw
+    installed: false
+    enabled: true
+    skills_dir: ~/.easyclaw/skills
+    project_relative_skills_dir: .easyclaw/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.easyclaw/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .easyclaw/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  firebender:
+    display_name: Firebender
+    installed: false
+    enabled: true
+    skills_dir: ~/.firebender/skills
+    project_relative_skills_dir: .firebender/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.firebender/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .firebender/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  gemini_cli:
+    display_name: Gemini CLI
+    installed: true
+    enabled: true
+    skills_dir: ~/.gemini/skills
+    project_relative_skills_dir: .gemini/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.gemini/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .gemini/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  github_copilot:
+    display_name: GitHub Copilot
+    installed: true
+    enabled: false
+    skills_dir: ~/.copilot/skills
+    project_relative_skills_dir: .copilot/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.copilot/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .copilot/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  goose:
+    display_name: Goose
+    installed: false
+    enabled: true
+    skills_dir: ~/.config/goose/skills
+    project_relative_skills_dir: .config/goose/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.config/goose/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .config/goose/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  hermes:
+    display_name: Hermes Agent
+    installed: false
+    enabled: true
+    skills_dir: ~/.hermes/skills
+    project_relative_skills_dir: .hermes/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.hermes/skills
+      deploy: symlink
+      scan: recursive
+      exists: false
+    - kind: skill
+      scope: project
+      path: .hermes/skills
+      deploy: symlink
+      scan: recursive
+      exists: false
+  iflow:
+    display_name: iFlow CLI
+    installed: false
+    enabled: true
+    skills_dir: ~/.iflow/skills
+    project_relative_skills_dir: .iflow/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.iflow/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .iflow/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  junie:
+    display_name: Junie
+    installed: false
+    enabled: true
+    skills_dir: ~/.junie/skills
+    project_relative_skills_dir: .junie/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.junie/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .junie/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  kilo_code:
+    display_name: Kilo Code
+    installed: false
+    enabled: true
+    skills_dir: ~/.kilocode/skills
+    project_relative_skills_dir: .kilocode/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.kilocode/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .kilocode/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  kimi:
+    display_name: Kimi Code CLI
+    installed: false
+    enabled: true
+    skills_dir: ~/.config/agents/skills
+    project_relative_skills_dir: .config/agents/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.config/agents/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .config/agents/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  kiro:
+    display_name: Kiro CLI
+    installed: true
+    enabled: false
+    skills_dir: ~/.kiro/skills
+    project_relative_skills_dir: .kiro/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.kiro/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .kiro/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  kode:
+    display_name: Kode
+    installed: false
+    enabled: true
+    skills_dir: ~/.kode/skills
+    project_relative_skills_dir: .kode/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.kode/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .kode/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  mcpjam:
+    display_name: MCPJam
+    installed: false
+    enabled: true
+    skills_dir: ~/.mcpjam/skills
+    project_relative_skills_dir: .mcpjam/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.mcpjam/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .mcpjam/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  mistral_vibe:
+    display_name: Mistral Vibe
+    installed: false
+    enabled: true
+    skills_dir: ~/.vibe/skills
+    project_relative_skills_dir: .vibe/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.vibe/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .vibe/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  mux:
+    display_name: Mux
+    installed: false
+    enabled: true
+    skills_dir: ~/.mux/skills
+    project_relative_skills_dir: .mux/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.mux/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .mux/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  neovate:
+    display_name: Neovate
+    installed: false
+    enabled: true
+    skills_dir: ~/.neovate/skills
+    project_relative_skills_dir: .neovate/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.neovate/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .neovate/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  openclaw:
+    display_name: OpenClaw
+    installed: false
+    enabled: true
+    skills_dir: ~/.openclaw/skills
+    project_relative_skills_dir: .openclaw/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.openclaw/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .openclaw/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  opencode:
+    display_name: OpenCode
+    installed: true
+    enabled: true
+    skills_dir: ~/.config/opencode/skills
+    project_relative_skills_dir: .opencode/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.config/opencode/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .opencode/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  openhands:
+    display_name: OpenHands
+    installed: false
+    enabled: true
+    skills_dir: ~/.openhands/skills
+    project_relative_skills_dir: .openhands/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.openhands/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .openhands/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  pi:
+    display_name: Pi
+    installed: false
+    enabled: true
+    skills_dir: ~/.pi/agent/skills
+    project_relative_skills_dir: .pi/agent/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.pi/agent/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .pi/agent/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  pochi:
+    display_name: Pochi
+    installed: false
+    enabled: true
+    skills_dir: ~/.pochi/skills
+    project_relative_skills_dir: .pochi/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.pochi/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .pochi/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  qclaw:
+    display_name: QClaw
+    installed: false
+    enabled: true
+    skills_dir: ~/.qclaw/skills
+    project_relative_skills_dir: .qclaw/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.qclaw/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .qclaw/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  qoder:
+    display_name: Qoder
+    installed: true
+    enabled: true
+    skills_dir: ~/.qoder/skills
+    project_relative_skills_dir: .qoder/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.qoder/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .qoder/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  qwen_code:
+    display_name: Qwen Code
+    installed: false
+    enabled: true
+    skills_dir: ~/.qwen/skills
+    project_relative_skills_dir: .qwen/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.qwen/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .qwen/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  replit:
+    display_name: Replit
+    installed: false
+    enabled: true
+    skills_dir: ~/.config/agents/skills
+    project_relative_skills_dir: .config/agents/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.config/agents/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .config/agents/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  roo_code:
+    display_name: Roo Code
+    installed: false
+    enabled: true
+    skills_dir: ~/.roo/skills
+    project_relative_skills_dir: .roo/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.roo/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .roo/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  trae:
+    display_name: TRAE IDE
+    installed: false
+    enabled: true
+    skills_dir: ~/.trae/skills
+    project_relative_skills_dir: .trae/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.trae/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .trae/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  trae_cn:
+    display_name: TRAE CN
+    installed: false
+    enabled: true
+    skills_dir: ~/.trae-cn/skills
+    project_relative_skills_dir: .trae-cn/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.trae-cn/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .trae-cn/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  warp:
+    display_name: Warp
+    installed: false
+    enabled: true
+    skills_dir: ~/.agents/skills
+    project_relative_skills_dir: .agents/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.agents/skills
+      deploy: symlink
+      scan: flat
+      exists: true
+    - kind: skill
+      scope: project
+      path: .agents/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  windsurf:
+    display_name: Windsurf
+    installed: false
+    enabled: true
+    skills_dir: ~/.codeium/windsurf/skills
+    project_relative_skills_dir: .codeium/windsurf/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.codeium/windsurf/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .codeium/windsurf/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  workbuddy:
+    display_name: WorkBuddy
+    installed: false
+    enabled: true
+    skills_dir: ~/.workbuddy/skills-marketplace/skills
+    project_relative_skills_dir: .workbuddy/skills-marketplace/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.workbuddy/skills-marketplace/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .workbuddy/skills-marketplace/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+  zencoder:
+    display_name: Zencoder
+    installed: false
+    enabled: true
+    skills_dir: ~/.zencoder/skills
+    project_relative_skills_dir: .zencoder/skills
+    is_custom: false
+    resources:
+    - kind: skill
+      scope: global
+      path: ~/.zencoder/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+    - kind: skill
+      scope: project
+      path: .zencoder/skills
+      deploy: symlink
+      scan: flat
+      exists: false
+profiles:
+- id: bf6ae8c1-162c-40ef-91f8-c85a07a7ba1d
+  name: Default
+  description: Default startup scenario
+  active: true

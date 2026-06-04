@@ -1,0 +1,96 @@
+model = "gpt-5.5"
+model_reasoning_effort = "medium"
+notify = [
+    "/Users/likai/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient",
+    "turn-ended",
+]
+
+[desktop]
+ambient-suggestions-enabled = false
+conversationDetailMode = "STEPS_COMMANDS"
+keepRemoteControlAwakeWhilePluggedIn = true
+preventSleepWhileRunning = true
+
+[features]
+goals = true
+js_repl = false
+
+[marketplaces.openai-bundled]
+last_updated = "2026-05-24T07:29:35Z"
+source = "/Users/likai/.codex/.tmp/bundled-marketplaces/openai-bundled"
+source_type = "local"
+
+[marketplaces.openai-primary-runtime]
+last_updated = "2026-05-23T16:56:31Z"
+source = "/Users/likai/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+source_type = "local"
+
+[mcp_servers.node_repl]
+args = []
+command = "/Applications/Codex.app/Contents/Resources/node_repl"
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_MARKETPLACE_NAME = "openai-bundled"
+CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
+CODEX_HOME = "/Users/likai/.codex"
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = ""
+NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/node"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "167fdf579477181fba1773c1efb067b00c5a64fe85dafb50a2001bde198dc739"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/likai/.codex"
+NODE_REPL_UNTRUSTED_ENV_ALLOWLIST = "BROWSER_USE_MARKETPLACE_NAME"
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."superpowers@openai-curated"]
+enabled = true
+
+[projects."/Users/likai"]
+trust_level = "trusted"
+
+[projects."/Users/likai/Documents/Codex/2026-05-25/img"]
+trust_level = "trusted"
+
+[projects."/Users/likai/Projects"]
+trust_level = "trusted"
+
+[projects."/Users/likai/Projects/ai/skills-manager"]
+trust_level = "trusted"
+
+[projects."/Users/likai/Projects/claude-code"]
+trust_level = "trusted"
+
+[projects."/Users/likai/Projects/langgraph-demo"]
+trust_level = "trusted"
+
+[[skills.config]]
+enabled = false
+path = "/Users/likai/.agents/skills/tailwind-design-system/SKILL.md"
+
+[[skills.config]]
+enabled = false
+name = "spreadsheets:Spreadsheets"
+
+[[skills.config]]
+enabled = false
+name = "presentations:Presentations"
+
+[[skills.config]]
+enabled = false
+path = "/Users/likai/.agents/skills/frontend-design/SKILL.md"
+
+[[skills.config]]
+enabled = false
+name = "documents:documents"
