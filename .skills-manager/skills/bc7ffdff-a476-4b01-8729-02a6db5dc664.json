@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "bc7ffdff-a476-4b01-8729-02a6db5dc664",
+  "path": "aclip",
+  "path_key": "aclip",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "git",
+    "ref": "git@github.com:likaihz/aclip.git",
+    "subpath": "skills/aclip",
+    "branch": null
+  }
+}
