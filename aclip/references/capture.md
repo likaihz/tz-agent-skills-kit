@@ -9,7 +9,12 @@ When the user provides one or more links:
 5. Read the CLI JSON result and keep the resource `id` and `path`.
 6. If the result has `duplicate: true`, follow `maintenance.md`.
 7. Before reporting title, class, usage, reason, or preview, run `aclip show <id>` because `aclip add` returns capture status but not the full resource metadata.
-8. Analyze only the saved note content after enough content exists.
+8. If `capture_status: captured` and the saved note has enough readable content, perform initial analysis from `analysis.md`.
+9. Apply the initial analysis with `aclip update-analysis <id> --json-file <path>`.
+10. Run `aclip show <id>` again before the final report.
+11. Analyze only the saved note content after enough content exists.
+
+Do not leave successful captures at `content_class: unknown` or `usage: quick_capture` when the saved content is sufficient for an initial judgment. Those values are acceptable only as temporary fallbacks when content is missing, incomplete, or explicitly just a transient quick capture.
 
 ## Provider Choice
 

@@ -22,6 +22,9 @@ Read only the reference documents needed for the user's request:
 - URL capture, WeChat, Zhihu, OpenCLI, failed captures, retries, or manual ingest: read `references/capture.md`.
 - Classification, usage, analysis metadata, or `update-analysis`: read `references/analysis.md`.
 - Later-reading queues, retrieval, recommendation, updates, archive, delete, or duplicate handling: read `references/maintenance.md`.
+- Reading recommendations, random later-reading picks, topic-based reading, or digesting unread resources: read `references/digestion.md`.
+- Remembered-item lookup, fuzzy recall, or synthesis across saved resources: read `references/recall.md`.
+- Applying saved knowledge during planning, design, research, implementation, debugging, or writing work: read `references/application.md`.
 
 ## Default Workflow
 
@@ -37,7 +40,10 @@ For one or more links:
 2. Use `--later` when the user intends later reading.
 3. Read the CLI JSON result and keep the resource `id` and `path`.
 4. Run `aclip show <id>` before reporting title, class, usage, reason, or preview.
-5. Analyze only saved note content after enough content exists.
+5. If capture succeeded and enough saved content exists, perform initial analysis from `references/analysis.md`.
+6. Apply that analysis with `aclip update-analysis <id> --json-file <path>`.
+7. Run `aclip show <id>` again and report the updated class and usage.
+8. Analyze only saved note content after enough content exists.
 
 For failed captures:
 
@@ -50,3 +56,10 @@ For classification or maintenance:
 1. Use enums and commands from `references/analysis.md` and `references/maintenance.md`.
 2. Do not invent enum values.
 3. Prefer CLI operations over direct note edits.
+
+For digestion, recall, or application:
+
+1. Use the relevant workflow reference.
+2. Base reasoning on saved Aclip content, not live pages.
+3. Report candidate uncertainty when matches are weak.
+4. Do not invent saved knowledge that was not found.
