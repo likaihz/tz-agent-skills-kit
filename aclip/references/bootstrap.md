@@ -32,7 +32,7 @@ If the user is on macOS and Homebrew is available, `brew install pipx` is also a
 After `pipx` is available, install the current release wheel:
 
 ```bash
-pipx install https://github.com/likaihz/aclip/releases/download/v0.1.1/aclip-0.1.1-py3-none-any.whl
+pipx install https://github.com/likaihz/aclip/releases/download/v0.1.2/aclip-0.1.2-py3-none-any.whl
 aclip --version
 ```
 

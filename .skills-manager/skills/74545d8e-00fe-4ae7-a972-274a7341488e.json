@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "74545d8e-00fe-4ae7-a972-274a7341488e",
+  "path": "drawio",
+  "path_key": "drawio",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "git",
+    "ref": "https://github.com/jgraph/drawio-mcp",
+    "subpath": "skill-cli/drawio",
+    "branch": null
+  }
+}

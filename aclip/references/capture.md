@@ -59,3 +59,92 @@ aclip ingest <id> --from-clipboard
 ```
 
 For failed captures, preserve the note. Offer retry first, then manual ingest.
+
+## Douyin Video Capture
+
+For Douyin or 抖音 shares, preserve the original share text and use the CLI.
+
+Default Douyin media engine is `douyin_downloader`; do not assume `yt-dlp` is primary. Use `--media-provider yt_dlp` only as explicit fallback/debug for legacy behavior.
+
+Before the first Douyin video capture, check dependencies:
+
+```bash
+aclip deps douyin-downloader check
+aclip deps ffmpeg check
+aclip deps transcriber check
+```
+
+If `douyin-downloader` is missing, install it and check again:
+
+```bash
+aclip deps douyin-downloader install --yes
+aclip deps douyin-downloader check
+```
+
+The preferred Douyin sidecar install is a pip install from GitHub into Aclip's
+managed virtualenv, exposing the `douyin-dl` console script. A local source
+checkout with `run.py` is fallback/debug compatibility only.
+
+Transcriber installation is provider-specific. For the first supported local provider, use the `whisper-cpp` checks, install commands, and model commands:
+
+```bash
+aclip deps whisper-cpp check
+aclip deps ffmpeg install --yes
+aclip deps whisper-cpp install --yes
+aclip deps whisper-cpp install-model --model small
+aclip deps whisper-cpp list-models
+```
+
+`aclip deps transcriber check` is an aggregate health check for configured transcription providers, not an install command.
+
+To remove optional Douyin dependencies, ask Aclip for uninstall guidance:
+
+```bash
+aclip deps douyin-downloader uninstall
+aclip deps ffmpeg uninstall
+aclip deps whisper-cpp uninstall
+aclip deps whisper-cpp uninstall-model --model small
+```
+
+Use `aclip add "<share text or URL>"`. If the share is an opaque Douyin command without a visible URL, report the CLI `next_step` and ask the user to copy a visible link from Douyin before retrying.
+
+For cookie JSON, Aclip automatically uses the managed default path when it exists:
+
+```bash
+~/.local/share/aclip/tools/douyin-downloader/config/cookies.json
+```
+
+To override the default cookie JSON, pass:
+
+```bash
+aclip add "<share text or URL>" --douyin-cookies-file <path>
+```
+
+For real Douyin e2e validation with the default engine, use a douyin-downloader
+JSON cookie file. If the run only partially captures media, inspect the saved
+`douyin-downloader.stdout.txt` and `douyin-downloader.stderr.txt` first; missing
+`ttwid`, `odin_tt`, or `passport_csrf_token` plus `Empty 200 response` means
+Douyin anti-bot blocked the detail API and fresh cookies are required.
+
+Use the legacy provider only when explicitly debugging fallback behavior:
+
+```bash
+aclip add "<share text or URL>" --media-provider yt_dlp --no-transcribe
+aclip retry <id> --force-media --media-provider yt_dlp --no-transcribe
+```
+
+For transcription, keep the default `--transcription-provider auto` unless the user asks for a specific engine or diagnostics point to one. Use `--transcription-provider whisper_cpp` for local whisper.cpp, `--transcription-provider openai` for OpenAI Speech to Text, and `--transcription-provider manual` or `--no-transcribe` when the user wants to save media without transcript extraction.
+
+Optional transcription flags apply to both `aclip add` and `aclip retry`:
+
+```bash
+aclip add "<share text or URL>" --transcription-provider whisper_cpp --transcription-model small --transcription-language zh
+aclip add "<share text or URL>" --transcription-provider openai --transcription-model gpt-4o-mini-transcribe --transcription-language zh
+aclip add "<share text or URL>" --no-transcribe
+aclip retry <id> --force-media --transcription-provider whisper_cpp --transcription-model small --transcription-language zh
+aclip retry <id> --force-media --no-transcribe
+```
+
+Use `aclip retry <id> --force-media` when a saved Douyin resource should refresh or repair downloaded media/transcript artifacts instead of reusing existing media state.
+
+Douyin video transcript content must be read from the saved Aclip note or `transcript_path`, not from the live page.
