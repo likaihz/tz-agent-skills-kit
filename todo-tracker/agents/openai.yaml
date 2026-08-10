@@ -1,0 +1,4 @@
+interface:
+  display_name: "Todo Tracker"
+  short_description: "Manage project dates, task priorities, and status"
+  default_prompt: "Use $todo-tracker to date projects and capture and manage my tasks in the work ledger."

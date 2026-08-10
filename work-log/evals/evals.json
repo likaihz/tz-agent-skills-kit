@@ -1,0 +1,35 @@
+{
+  "skill_name": "work-log",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "记录一下：刚完成 work-ledger 的 Markdown parser，关联实现 work-ledger 这个任务。",
+      "expected_output": "解析项目和任务，记录 result 或 progress 事件；没有明确完成任务意图时不改变任务状态",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "补记昨天：决定周报只保留个人版和上报版，不记得具体时间。",
+      "expected_output": "使用 date precision 和 decision 类型，保留当前 recorded_at，不声称事件发生在午夜",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "上一条流水关联错任务了，改到 task-20260719-002。",
+      "expected_output": "定位并审阅原事件，追加包含完整替代视图和原因的 correction，不直接覆盖 Journal",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "记录一下刚做的事，但 work-ledger 命令现在找不到。",
+      "expected_output": "在记录事件前停止并通过 work-ledger 路由到 skill-setup，不猜测旧脚本位置或直接编辑 Journal",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "项目结束日期是昨天，但今天又做了一次收尾排查，按今天记一笔。",
+      "expected_output": "按今天记录事件并保持项目和可选任务关联，不因为 occurred_at 超出项目 end_date 而拒绝、改期或自动修改项目日期",
+      "files": []
+    }
+  ]
+}

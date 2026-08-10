@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "b8c6096c-9906-4a83-b25f-51b81296ee49",
+  "path": "skill-setup",
+  "path_key": "skill-setup",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "git",
+    "ref": "git@github.com:likaihz/tz-agent-harness.git",
+    "subpath": "skills/skill-setup",
+    "branch": null
+  }
+}

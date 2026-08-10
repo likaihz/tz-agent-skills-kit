@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "90c7a03c-cfa5-4936-bfeb-d33fc851c27d",
+  "path": "todo-tracker",
+  "path_key": "todo-tracker",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "git",
+    "ref": "git@github.com:likaihz/tz-agent-harness.git",
+    "subpath": "skills/todo-tracker",
+    "branch": null
+  }
+}

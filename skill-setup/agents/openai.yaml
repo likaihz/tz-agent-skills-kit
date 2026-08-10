@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Setup"
+  short_description: "Install and verify runtimes required by Agent Skills"
+  default_prompt: "Use $skill-setup to prepare, verify, or repair the runtime and instance environment for a selected Skill."

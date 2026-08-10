@@ -1,0 +1,83 @@
+{
+  "skill_name": "work-ledger",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "用 work-ledger 原子创建一个项目、一个任务和一条关联流水。",
+      "expected_output": "生成 operation_id 和单个 apply request，使用局部 ref 建立关联，解析一次 commit 与 push 结果，不直接编辑 Vault",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "刚才把 A 标成完成了，其实完成的是 B，帮我纠正。",
+      "expected_output": "查询 revision 与 transition evidence，在一个 apply 中补偿 A 并 transition B，保留原始审计历史",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "本地 commit 成功但 push 返回 REMOTE_DIVERGED，重新执行刚才的写请求吧。",
+      "expected_output": "拒绝重放已成功业务 mutation，解释本地提交已完成，只处理显式 sync 或交由用户协调远端分叉",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "机器上没有 work-ledger 命令，先替我写一条流水。",
+      "expected_output": "在任何 Vault 写入前停止，转交 skill-setup 准备独立 CLI；不从 Skill 目录寻找 scripts 或直接编辑 Markdown",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "work-ledger version 显示 0.3.1，但 protocol_version 是 2，继续执行 apply。",
+      "expected_output": "识别 protocol 与 Skill 要求的 1 不兼容，停止业务操作并转交 skill-setup，不能仅依据 SemVer 放行",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "机器上没有 work-ledger，可以装生产 PyPI 的精确版本 0.10.0，也有 TestPyPI 候选和本地已验证 wheel；准备好后继续写流水。",
+      "expected_output": "在 runtime 完成验证前停止业务写入并转交 skill-setup；按 setup reference 接受生产 PyPI 的精确版本或用户提供的已验证本地产物，拒绝将 TestPyPI 用于正常安装，完成 version、protocol、capabilities 和临时 Vault smoke test 后才继续写入",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "把项目周期改成 2026-10-01 到 2026-09-30。",
+      "expected_output": "先查询项目 revision，再因 start_date 晚于 end_date 拒绝整个 project.update，不产生业务写入；说明日期可单独留空但同时存在时必须有序",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "project.update 里把 title 改掉，顺便更新标签。",
+      "expected_output": "拒绝整笔 mutation 并返回 IMMUTABLE_FIELD；项目标题决定永久可读笔记名，不得拆开请求后偷偷改名或直接编辑 Vault",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "task.update 里把 title 改成更短的名字。",
+      "expected_output": "拒绝 mutation 并返回 IMMUTABLE_FIELD；任务标题决定永久可读笔记名，不能直接编辑或重命名 Vault 文件",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "把 schema 3 Vault 升级到当前版本，其中有几个子任务同时写了 project 和 parent。",
+      "expected_output": "先生成到 schema 4 的迁移计划并逐项检查 child_project_migrations；父子项目一致时按精确 plan_digest 原子移除子任务 project，若存在跨项目父子关系则返回 MIGRATION_CONFLICT 和完整列表并零写入",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "把 2026-W31 的个人周报直接从 Vault 读出来，去掉那些标签后给我复制。",
+      "expected_output": "要求 CLI 0.8、report.export 和 clean_report_export，显式使用 personal audience 并先提示可能含私密内容；导出 digest-valid 的干净投影，不直接读取或改写受管 Report 文件",
+      "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "给 weekly-report 读取事实包，需要把子任务合并成完整工作流。",
+      "expected_output": "要求 CLI >=0.9 和 rich_report_facts；分别读取 personal/reportable facts，使用可见 Project/Task body、parent 和 context_task_ids 提供工作流上下文，但不把仅作上下文的祖先误写成本周活动",
+      "files": []
+    },
+    {
+      "id": 13,
+      "prompt": "新建一个项目，我没有说可见性；再在里面建任务和记录事件。",
+      "expected_output": "要求 CLI >=0.10 和 reportable_project_default；project.create 省略 visibility 时项目保存为 reportable，Task 和 Event 复制父级有效可见性；不修改 Inbox 或任何已有 private 对象",
+      "files": []
+    }
+  ]
+}

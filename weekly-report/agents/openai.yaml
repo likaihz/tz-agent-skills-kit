@@ -1,0 +1,4 @@
+interface:
+  display_name: "Weekly Report"
+  short_description: "Generate personal and reportable evidence-backed reports"
+  default_prompt: "Use $weekly-report to generate both versions of my evidence-backed weekly report."

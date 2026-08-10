@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "1b4b6d1f-ba55-4d34-9fb1-50291733f9a9",
+  "path": "weekly-report",
+  "path_key": "weekly-report",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "git",
+    "ref": "git@github.com:likaihz/tz-agent-harness.git",
+    "subpath": "skills/weekly-report",
+    "branch": null
+  }
+}

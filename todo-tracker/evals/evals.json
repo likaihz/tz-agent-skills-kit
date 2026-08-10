@@ -1,0 +1,59 @@
+{
+  "skill_name": "todo-tracker",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "记个待办：周三前完成 work-ledger 的状态机测试，属于个人 Skill 仓库，优先级高。",
+      "expected_output": "解析或确认项目，创建带 due_date 和 P1 优先级的 tracked task，并返回 Obsidian 链接与 Git 结果",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "work-ledger 被 Git hook 卡住了。",
+      "expected_output": "将唯一任务 transition 为 blocked 并记录 blocker；若任务匹配不唯一则先展示候选",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "刚修了一个错别字，记一下。",
+      "expected_output": "识别为不需要状态管理的一次性事件并路由给 work-log，而不是创建新任务",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "记个待办，但当前机器的 work-ledger CLI 版本不兼容。",
+      "expected_output": "在创建任务前停止并通过 work-ledger 路由到 skill-setup，不直接写 Vault，也不使用 Skill 内脚本兜底",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "创建“Q3 Skill 建设”项目，周期是 2026-07-01 到 2026-09-30；如果以后延期我还要能改结束日期。",
+      "expected_output": "通过 work-ledger 创建带 start_date 和 end_date 的项目，验证起始日期不晚于结束日期并返回 Obsidian 链接；后续修改需先查询 revision，再用 project.update 更新或清空单个边界",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "把“Q3 Skill 建设”项目改名成“下半年 Skill 建设”。",
+      "expected_output": "拒绝提交 project.update.title，说明项目创建标题是永久 Obsidian 笔记名且不可修改；不得直接重命名 Markdown 文件",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "把任务“完成发布检查”改名成“发布并验收”。",
+      "expected_output": "拒绝提交 task.update.title，说明任务创建标题是永久 Obsidian 笔记名且不可修改；继续使用稳定 task ID 查询，但不得直接重命名 Markdown 文件",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "在“完成发布检查”下面创建子任务“验证安装”，项目还是个人 Skill 仓库。",
+      "expected_output": "解析父任务后只提交 parent_id 或 parent_ref，不提交 project_id/project_ref；说明子任务沿父链继承项目，避免 Obsidian Graph 出现重复项目边",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "创建一个“Q4 规划”项目，我没有特别的隐私要求。",
+      "expected_output": "要求 work-ledger CLI >=0.10 和 reportable_project_default；project.create 省略 visibility 以使用 reportable 默认值，不把默认创建误解为对历史 private 对象的提升",
+      "files": []
+    }
+  ]
+}

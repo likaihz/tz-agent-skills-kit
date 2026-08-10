@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "5b1c5983-c62a-40e7-9d28-fe94fd0ff3a7",
+  "path": "work-ledger",
+  "path_key": "work-ledger",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "git",
+    "ref": "git@github.com:likaihz/tz-agent-harness.git",
+    "subpath": "skills/work-ledger",
+    "branch": null
+  }
+}

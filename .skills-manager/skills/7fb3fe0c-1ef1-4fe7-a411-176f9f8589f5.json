@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "7fb3fe0c-1ef1-4fe7-a411-176f9f8589f5",
+  "path": "work-log",
+  "path_key": "work-log",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "git",
+    "ref": "git@github.com:likaihz/tz-agent-harness.git",
+    "subpath": "skills/work-log",
+    "branch": null
+  }
+}

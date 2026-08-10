@@ -1,0 +1,65 @@
+{
+  "skill_name": "skill-setup",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我把 work-ledger 的执行环境准备好。我还没创建 Vault，也没告诉你 Git remote。",
+      "expected_output": "读取 work-ledger setup reference，验证现状，并在创建真实 Vault 前向用户取得 Vault 路径和 remote 选择；不写死安装命令",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "work-ledger 昨天还能用，今天定时任务提示收据里的 executable 不存在，帮我修复。",
+      "expected_output": "重新探测可信 runtime，保留兼容配置，修复稳定入口、收据和定时任务绝对路径，再验证 version、capabilities、doctor 和定时调用",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "把我所有 skill 的依赖环境都 setup 一遍。",
+      "expected_output": "读取 catalog v2、解析 Skill 依赖拓扑并合并 runtime_requires，按 setup reference 先准备 runtime 再准备实例，先展示计划且不重新实现 Skill 安装生态",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "我装着 work-ledger 0.1.0，本地没有可用产物，请用生产 PyPI 的 agent-ledger-harness 精确版本 0.10.0 升级到当前 Skill 能用的版本。",
+      "expected_output": "同时检查 CLI SemVer 和 protocol，从生产 PyPI 隔离安装 agent-ledger-harness 0.10.0，先做无配置探测和临时 Vault smoke test，成功后原子切换 work-ledger-cli 运行时入口并记录 source_kind: pypi、source: agent-ledger-harness==0.10.0、managed: true 的收据",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "新 work-ledger 已经装到临时位置，但 smoke test 失败了，继续替换旧版本吧。",
+      "expected_output": "拒绝切换失败候选，保留旧 executable、收据、配置和 Vault，说明具体验证失败且不执行真实数据迁移",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "为正常日常使用安装 Work Ledger CLI；它在生产 PyPI 使用 agent-ledger-harness distribution 的精确版本 0.10.0，TestPyPI 有更新候选，本地还有一个已验证 wheel，帮我选来源并完成 setup。",
+      "expected_output": "读取 work-ledger setup reference，按 trusted-source 顺序选择用户提供的已验证本地 wheel，不改用顺序更后的生产 PyPI agent-ledger-harness distribution，并拒绝将 TestPyPI 用于正常安装；隔离安装和临时 Vault 验证成功后，确认 work-ledger-cli 产品身份，并记录 source_kind: wheel、不含凭证的 verified artifact identity 作为 source，以及 managed: true 的收据",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "work-ledger 0.6 已验证通过，但现有 Vault 还是 schema 1，继续完成升级。",
+      "expected_output": "先生成 schema 1 到 4 的完整迁移计划，检查可读文件名冲突、受影响文件、unmanaged-link 风险和 child_project_migrations；跨项目子任务冲突时停止，否则只应用该 plan_digest，并验证单个迁移 commit、schema 4 marker、doctor 和 push 状态",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "更新 work-ledger，让新版 Obsidian 插件可以复制干净周报。",
+      "expected_output": "将 Obsidian client outcome 收紧到 CLI >=0.8、snapshot、report.export、read_only_snapshot 和 clean_report_export；隔离验证 snapshot 与 Markdown/text 导出均不修改 Vault/Git 后再切换稳定入口，不迁移已经是 schema 4 的 Vault",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "更新 work-ledger，让 weekly-report 能按完整工作流生成两段式周报。",
+      "expected_output": "将 weekly-report outcome 收紧到 CLI >=0.9、report.facts 和 rich_report_facts；在临时 schema 4 Vault 验证可见 Project/Task body、父级 context_task_ids 和编号项 evidence 拒绝后再切换入口，不迁移或改写真实 Vault",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "更新 work-ledger，让新项目默认可上报，但不要动我现有的私有项目。",
+      "expected_output": "要求 CLI >=0.10 和 reportable_project_default，在临时 Vault 验证普通 Project 省略 visibility 时为 reportable、显式 private 与 Inbox 仍为 private；确认 schema 不变且不迁移或改写真实 Vault后再切换入口",
+      "files": []
+    }
+  ]
+}

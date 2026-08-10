@@ -1,0 +1,65 @@
+{
+  "skill_name": "weekly-report",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "写一下本周周报，个人版和给主管的版本都要。",
+      "expected_output": "要求 CLI >=0.9 和 rich_report_facts，独立请求 personal/reportable facts；按工作流生成“本周进展／下周计划”主体及紧邻编号项的 evidence markers，并通过一次 report.write 保存两版",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "这是周五晚上九点的定时周报任务。",
+      "expected_output": "先查询 report due，补跑 missing/incomplete/stale 周，modified 留给用户决定，且不自动发送",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "把个人版里的这条私密排查过程稍微改写一下放进上报版。",
+      "expected_output": "拒绝从 personal facts 派生上报内容，只使用独立 reportable facts，并解释可见性边界",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "周五九点的定时任务启动了，但收据里的 work-ledger executable 已失效。",
+      "expected_output": "在读取 facts 或写报告前停止并路由到 skill-setup 修复 runtime 收据和定时入口，不自动发送或直接扫描 Vault",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "某项目本周刚好到了 end_date，但没有完成事件，周报里写成已完成吧。",
+      "expected_output": "拒绝从项目 end_date 推断完成状态，只使用任务状态和有效事件事实；可以把日期当作上下文，但不能伪造成果或影响",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "这周同一个任务连续记了实现、联调、修复和测试通过四条流水，直接帮我写周报。",
+      "expected_output": "按项目、父级任务和工作流合并重复过程，以最新验证结果收束；使用 Project/Task/Event body 中已有的上下文和验证信息，合成一个包含结论、范围、机制和验证的编号项",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "周报里直接把 task 标题和 event summary 列出来就行。",
+      "expected_output": "不把任务标题或事件摘要原样当作成稿；在不编造的前提下按工作流综合结果或阶段结论、范围、机制、验证及相关风险，证据不足时保持简洁",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "把上报版周报复制给我，我要直接发到群里。",
+      "expected_output": "使用显式 reportable audience 的 report export 生成干净 Markdown 或纯文本，不复制受管文件 frontmatter、evidence 注释和 Obsidian 目标；不自动发送",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "上报版按我平时的格式写：本周进展和下周计划，每项用（1）（2），不要再拆概览、成果、决策和风险。",
+      "expected_output": "上报版不写周次标题，只使用加粗的“本周进展：”“下周计划：”两个标题；每个工作流使用连续全角编号，决策和风险并入相关事项，空章节不编号且不凑数",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "个人事实里有两个下周任务，但上报事实里没有，直接帮我补到给主管的版本。",
+      "expected_output": "只比较 personal/reportable 的 next_week_task_ids 来识别可见性缺口；不复制 private 标题或文案、不自动提升，交互场景请求用户检查可见性，定时场景留空并报告待复核数量",
+      "files": []
+    }
+  ]
+}
