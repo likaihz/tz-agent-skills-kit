@@ -1,4 +1,4 @@
 interface:
   display_name: "Work Log"
-  short_description: "Record and retrieve project-linked work events"
-  default_prompt: "Use $work-log to record this work event and link it to the right project or task."
+  short_description: "Record ideas, insights, and project-linked events"
+  default_prompt: "Use $work-log to classify and record this event without implicit Knowledge or Task changes."

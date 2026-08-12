@@ -30,6 +30,42 @@
       "prompt": "项目结束日期是昨天，但今天又做了一次收尾排查，按今天记一笔。",
       "expected_output": "按今天记录事件并保持项目和可选任务关联，不因为 occurred_at 超出项目 end_date 而拒绝、改期或自动修改项目日期",
       "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "记录一下：我想到一个还没验证的方向，把 evidence digest 固定进游标。",
+      "expected_output": "把未验证的可能性或方向分类为 idea Event；按 Project 解析链关联，不自动创建 Knowledge，也不改变 Task 状态",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "记一笔：已经确认所有分页过滤器都必须进入 cursor signature，这条规律可以复用。",
+      "expected_output": "把已确认且可复用的规律或结论分类为 insight Event；不自动创建 Knowledge，也不改变 Task 状态",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "记录‘缓存也许该按 revision 做’，我也说不清这是想法还是洞见。",
+      "expected_output": "语义模糊、idea 与 insight 难分时默认记录 idea；保留用户原意且不擅自提升为 insight、Knowledge 或 Task transition",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "记下这条 idea，但我没说 Project，最近上下文也没有唯一 Task 或 Project。",
+      "expected_output": "依次尝试显式对象、Task 派生 Project、唯一 active Task、唯一上下文 Project；都无法解析时关联受保护的 private Inbox（project-inbox），不新建 Project",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "把刚才的 idea 和 insight 都记下来。",
+      "expected_output": "work-log 只提交对应 event.add；不自动创建 Knowledge，不改变 Task 或隐式 transition。Knowledge 创建与 Task transition 都需要独立明确请求并通过各自 Skill 处理",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "今天做了什么？只查一下，不要记录新流水。",
+      "expected_output": "使用 event list 配置今天本地时区的 inclusive --from 与 exclusive --to；需要详情时用 event show --id 和 effective view。不生成 operation_id，不提交 event.add 或 event.correct，不产生 Vault mutation",
+      "files": []
     }
   ]
 }

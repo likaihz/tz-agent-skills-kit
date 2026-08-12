@@ -1,6 +1,6 @@
 ---
 name: work-ledger
-description: Operate the independently installed work-ledger CLI behind an Obsidian-compatible, Git-backed personal work ledger. Use when another Skill or the user needs exact project/task/event CRUD, transitions, correction or compensation, object resolution, consistent read-only snapshots, visibility previews, weekly-report facts or writes, doctor, migration, initialization, Git sync, CLI compatibility checks, or low-level diagnosis. This Skill is the CLI manual and safety contract; environment preparation routes to skill-setup, while business-facing requests normally route through todo-tracker, work-log, or weekly-report.
+description: Use when an independently installed work-ledger CLI operation needs exact Project, Task, Event, Knowledge, report, snapshot, visibility, migration, recovery, Git, or compatibility behavior; business-facing requests normally route through todo-tracker, work-log, weekly-report, or knowledge-base.
 ---
 
 # Work Ledger
@@ -10,8 +10,8 @@ Use the independently distributed CLI as the only writer for managed `Work/` Mar
 ## Start
 
 1. Resolve `work-ledger` from the current execution environment; never derive an executable from this Skill directory.
-2. Run `work-ledger version`. Require `product=work-ledger-cli`, `cli_version>=0.10.0,<1.0.0`, and `protocol_version=1`.
-3. Run `work-ledger capabilities` and require `readable_project_notes`, `immutable_project_titles`, `readable_task_notes`, `immutable_task_titles`, `inherited_child_projects`, `reportable_project_default`, plus every feature needed by the request.
+2. Run `work-ledger version`. Require `product=work-ledger-cli`, `cli_version>=0.11.0,<1.0.0`, and `protocol_version=1`.
+3. Run `work-ledger capabilities` and require `readable_project_notes`, `immutable_project_titles`, `readable_task_notes`, `immutable_task_titles`, `inherited_child_projects`, `reportable_project_default`, `knowledge_documents=true`, plus every feature needed by the request.
    For a visualization snapshot, additionally require command `snapshot` and `read_only_snapshot=true`.
    For a clean Report export, additionally require command `report.export` and `clean_report_export=true`.
    For evidence-rich weekly Report generation, additionally require command `report.facts` and `rich_report_facts=true`.
@@ -31,5 +31,6 @@ Use the independently distributed CLI as the only writer for managed `Work/` Mar
 - Present ambiguity candidates to the user; never select a fuzzy match silently.
 - Treat a project title as its permanent Obsidian note name. Never submit `title` in `project.update`.
 - Treat a task title as its permanent Obsidian note name. Never submit `title` in `task.update`.
-- Never edit managed Project, Task, Journal, or Report files directly.
+- Treat a Knowledge slug and path as immutable. A title update changes the Markdown content, never the file path.
+- Never edit managed Project, Task, Journal, Knowledge, or Report files directly.
 - Never auto-promote visibility, pull, merge, rebase, force-push, or physically delete business history.

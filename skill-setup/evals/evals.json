@@ -21,8 +21,8 @@
     },
     {
       "id": 4,
-      "prompt": "我装着 work-ledger 0.1.0，本地没有可用产物，请用生产 PyPI 的 agent-ledger-harness 精确版本 0.10.0 升级到当前 Skill 能用的版本。",
-      "expected_output": "同时检查 CLI SemVer 和 protocol，从生产 PyPI 隔离安装 agent-ledger-harness 0.10.0，先做无配置探测和临时 Vault smoke test，成功后原子切换 work-ledger-cli 运行时入口并记录 source_kind: pypi、source: agent-ledger-harness==0.10.0、managed: true 的收据",
+      "prompt": "我装着 work-ledger 0.1.0，本地没有可用产物，请用生产 PyPI 的 agent-ledger-harness 精确版本 0.11.0 升级到当前 Skill 能用的版本。",
+      "expected_output": "同时检查 CLI >=0.11.0,<1.0.0、protocol 1、knowledge.list/knowledge.show 和 knowledge_documents，从生产 PyPI 隔离安装 agent-ledger-harness 0.11.0，先做无配置探测和临时 schema 5 Vault smoke test，成功后原子切换 work-ledger-cli 运行时入口并记录 source_kind: pypi、source: agent-ledger-harness==0.11.0、managed: true 的收据",
       "files": []
     },
     {
@@ -33,32 +33,38 @@
     },
     {
       "id": 6,
-      "prompt": "为正常日常使用安装 Work Ledger CLI；它在生产 PyPI 使用 agent-ledger-harness distribution 的精确版本 0.10.0，TestPyPI 有更新候选，本地还有一个已验证 wheel，帮我选来源并完成 setup。",
-      "expected_output": "读取 work-ledger setup reference，按 trusted-source 顺序选择用户提供的已验证本地 wheel，不改用顺序更后的生产 PyPI agent-ledger-harness distribution，并拒绝将 TestPyPI 用于正常安装；隔离安装和临时 Vault 验证成功后，确认 work-ledger-cli 产品身份，并记录 source_kind: wheel、不含凭证的 verified artifact identity 作为 source，以及 managed: true 的收据",
+      "prompt": "为正常日常使用安装 Work Ledger CLI；它在生产 PyPI 使用 agent-ledger-harness distribution 的精确版本 0.11.0，TestPyPI 有更新候选，本地还有一个已验证 wheel，帮我选来源并完成 setup。",
+      "expected_output": "读取 work-ledger setup reference，按 trusted-source 顺序选择用户提供的已验证本地 wheel，不改用顺序更后的生产 PyPI agent-ledger-harness distribution，并拒绝将 TestPyPI 用于正常安装；隔离安装后验证 CLI >=0.11.0,<1.0.0、protocol 1、knowledge.list/knowledge.show、knowledge_documents 和临时 schema 5 Vault，确认 work-ledger-cli 产品身份，并记录 source_kind: wheel、不含凭证的 verified artifact identity 作为 source，以及 managed: true 的收据",
       "files": []
     },
     {
       "id": 7,
-      "prompt": "work-ledger 0.6 已验证通过，但现有 Vault 还是 schema 1，继续完成升级。",
-      "expected_output": "先生成 schema 1 到 4 的完整迁移计划，检查可读文件名冲突、受影响文件、unmanaged-link 风险和 child_project_migrations；跨项目子任务冲突时停止，否则只应用该 plan_digest，并验证单个迁移 commit、schema 4 marker、doctor 和 push 状态",
+      "prompt": "work-ledger 0.11 已验证通过，但现有 Vault 还是 schema 1，继续完成升级。",
+      "expected_output": "先生成 schema 1 到 5 的完整迁移计划，检查可读文件名冲突、受影响文件、unmanaged-link 风险、child_project_migrations 和 4->5-knowledge-documents；冲突时停止且禁止业务写入，否则只应用该 plan_digest，并验证单个迁移 commit、schema 5 marker、doctor 和 push 状态后再切换稳定入口",
       "files": []
     },
     {
       "id": 8,
       "prompt": "更新 work-ledger，让新版 Obsidian 插件可以复制干净周报。",
-      "expected_output": "将 Obsidian client outcome 收紧到 CLI >=0.8、snapshot、report.export、read_only_snapshot 和 clean_report_export；隔离验证 snapshot 与 Markdown/text 导出均不修改 Vault/Git 后再切换稳定入口，不迁移已经是 schema 4 的 Vault",
+      "expected_output": "先满足 work-ledger CLI >=0.11.0,<1.0.0、protocol 1、schema 5、knowledge.list/knowledge.show 和 knowledge_documents，再将 Obsidian client outcome 加上 snapshot、report.export、read_only_snapshot 和 clean_report_export；隔离验证 Knowledge projection、snapshot 与 Markdown/text 导出均不修改 Vault/Git 后再切换稳定入口",
       "files": []
     },
     {
       "id": 9,
       "prompt": "更新 work-ledger，让 weekly-report 能按完整工作流生成两段式周报。",
-      "expected_output": "将 weekly-report outcome 收紧到 CLI >=0.9、report.facts 和 rich_report_facts；在临时 schema 4 Vault 验证可见 Project/Task body、父级 context_task_ids 和编号项 evidence 拒绝后再切换入口，不迁移或改写真实 Vault",
+      "expected_output": "先满足 work-ledger CLI >=0.11.0,<1.0.0、protocol 1、schema 5、knowledge.list/knowledge.show 和 knowledge_documents，再将 weekly-report outcome 加上 report.facts 和 rich_report_facts；在临时 schema 5 Vault 验证可见 Project/Task/Event/Knowledge facts、父级 context_task_ids、Knowledge evidence 和编号项 evidence 拒绝后再切换入口，不迁移或改写真实 Vault",
       "files": []
     },
     {
       "id": 10,
       "prompt": "更新 work-ledger，让新项目默认可上报，但不要动我现有的私有项目。",
-      "expected_output": "要求 CLI >=0.10 和 reportable_project_default，在临时 Vault 验证普通 Project 省略 visibility 时为 reportable、显式 private 与 Inbox 仍为 private；确认 schema 不变且不迁移或改写真实 Vault后再切换入口",
+      "expected_output": "要求 CLI >=0.11.0,<1.0.0、protocol 1、schema 5、knowledge.list/knowledge.show、knowledge_documents 和 reportable_project_default，在临时 Vault 验证普通 Project 省略 visibility 时为 reportable、显式 private 与 Inbox 仍为 private；不迁移或改写真实 Vault，全部 gate 通过后再切换入口",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "work-ledger 0.10.0 能运行，protocol 是 1，但 capabilities 没有 knowledge.list、knowledge.show 和 knowledge_documents；Vault 还是 schema 4。时间很紧，先开始 Knowledge 业务写入。",
+      "expected_output": "把可运行但不兼容的旧 CLI 视为 hard failure，停止并禁止所有业务写入；要求 CLI >=0.11.0,<1.0.0、protocol 1、knowledge.list、knowledge.show、features.knowledge_documents=true 和 Vault schema 5 全部满足，先隔离验证候选与临时 schema 5 smoke，再对真实 Vault 生成并审核 migrate plan --to 5，只应用精确 plan_digest，成功后才原子切换稳定入口和收据",
       "files": []
     }
   ]

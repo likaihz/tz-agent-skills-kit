@@ -39,7 +39,7 @@ Use exactly the two shared headings and no others. Use only the reportable facts
 
 ## Synthesis
 
-Before writing, build an internal evidence map grouped by Project and workstream. Use Project and Task bodies plus `context_task_ids` and parent links to understand scope. A workstream may span one parent Task, related child Tasks, or several Events that describe the same delivered capability or resolved problem.
+Before writing, build an internal evidence map grouped by Project and workstream. Use Project, Task, Event, and Knowledge bodies plus `context_task_ids`, parent links, and Knowledge source Event links to understand scope. A workstream may span one parent Task, related child Tasks, several Events, and related Knowledge that describe the same delivered capability or resolved problem. Knowledge is fact material, not a fixed Knowledge section.
 
 For each workstream:
 
@@ -47,13 +47,17 @@ For each workstream:
 2. Merge implementation and investigation Events that led to the same result.
 3. Prefer the latest verified result over superseded progress statements.
 4. Add supported verification, decision, risk, or next step from Event bodies and transitions.
-5. Write the smallest number of numbered items that still preserves meaningful context.
+5. Merge a Knowledge body with its effective source Event in that same workstream; avoid repeating the same claim as separate Event and Knowledge items.
+6. Write the smallest number of numbered items that still preserves meaningful context.
 
 A strong item starts with an outcome or stage conclusion and usually connects two or more supported elements: scope, action or mechanism, verification, decision, risk, or next step. Keep all facts for that workstream in the same item. If facts support only one element, state only that element; never pad with invented impact.
 
 Do not:
 
 - use a Task title or Event summary unchanged as the final item;
+- use a Knowledge title unchanged as the final item;
+- present draft Knowledge as finished work or a stable conclusion; qualify it as “草稿” or “在研”;
+- create a fixed Knowledge section instead of merging the material into its workstream;
 - turn each Event into a separate chronological item;
 - repeat the same workstream in an overview, outcome, progress, decision, or risk section;
 - claim impact, adoption, completion, or commitments absent from the facts package.
@@ -84,14 +88,17 @@ Place a marker immediately after each factual numbered item:
 - `（1）`, `(1)`, and `1.` items are all validated by the CLI, but authored reports use full-width `（1）` numbering.
 - Section placeholders need no evidence and must not use a numbered prefix.
 - Never cite an ID absent from the current audience's facts package.
+- A Knowledge ID is valid evidence only when that exact ID appears in the current audience's `knowledge` facts collection. A source Event ID does not implicitly admit its Knowledge, and a Knowledge ID does not implicitly admit a source outside the package.
 
 ## Fact boundaries
 
 - Facts are authoritative; prose may summarize but not add claims.
+- A Knowledge body is supporting fact material. Its `updated_at` does not prove weekly activity; period inclusion must come from creation or an effective in-period source Event as represented by the facts package.
+- Draft Knowledge requires qualified wording such as “草稿” or “在研”; it does not establish completion, publication, or a stable conclusion.
 - A date-precision event has no known exact time.
 - A task completed and reopened within the week is not a completed result at period end.
 - A due date without next-week `planned_for` is not a commitment.
-- Compare personal and reportable `next_week_task_ids` only to detect a visibility gap. Never derive reportable prose from the personal package or reveal omitted private titles in the reportable report.
+- Compare personal and reportable `next_week_task_ids` only to detect a visibility gap. Never reuse personal prose in the reportable draft, derive reportable prose from the personal package, or reveal omitted private Knowledge titles, bodies, relationships, or diagnostics.
 - A project start or end date does not by itself prove progress, completion, impact, or a next-week commitment.
 - Reportable prose must not reveal the existence, title, relationship, or diagnostics of private objects.
 

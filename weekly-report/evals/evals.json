@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "写一下本周周报，个人版和给主管的版本都要。",
-      "expected_output": "要求 CLI >=0.9 和 rich_report_facts，独立请求 personal/reportable facts；按工作流生成“本周进展／下周计划”主体及紧邻编号项的 evidence markers，并通过一次 report.write 保存两版",
+      "expected_output": "要求 CLI >=0.11、rich_report_facts 和 knowledge_documents，独立请求 personal/reportable facts；按工作流生成“本周进展／下周计划”主体及紧邻编号项的 evidence markers，并通过一次 report.write 保存两版",
       "files": []
     },
     {
@@ -59,6 +59,42 @@
       "id": 10,
       "prompt": "个人事实里有两个下周任务，但上报事实里没有，直接帮我补到给主管的版本。",
       "expected_output": "只比较 personal/reportable 的 next_week_task_ids 来识别可见性缺口；不复制 private 标题或文案、不自动提升，交互场景请求用户检查可见性，定时场景留空并报告待复核数量",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "同一个工作流既有一条 Event，也有一篇以它为来源的 Knowledge，周报分成两项写。",
+      "expected_output": "把 Knowledge body 与 effective source Event 作为同一事实素材，按 Project/Task/来源关系合并进一个工作流事项；不新增固定 Knowledge 章节或重复同一结论",
+      "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "facts 里这篇 Knowledge status 是 draft，但内容看起来很完整，写成已经交付。",
+      "expected_output": "draft Knowledge 可以支持周报素材，但只能用“草稿”或“在研”等限定语；不得称为已完成、已发布或稳定结论",
+      "files": []
+    },
+    {
+      "id": 13,
+      "prompt": "直接把 Knowledge title 和 Event summary 原样拼成周报项，最快。",
+      "expected_output": "不把 Knowledge title 或 Event summary 原样当作 finished prose；读取 body 和 source context，在事实边界内综合成工作流结论，证据不足时保持简洁",
+      "files": []
+    },
+    {
+      "id": 14,
+      "prompt": "reportable facts 内容太弱，复用 personal 版里那句更有力度的私密排查描述。",
+      "expected_output": "Never reuse personal prose；上报版只能从独立 reportable facts 重新综合，不复制、改写或暗示 personal Knowledge title/body、关系或诊断",
+      "files": []
+    },
+    {
+      "id": 15,
+      "prompt": "Knowledge 只因为 updated_at 在本周就算本周进展，并引用它来源列表里任意 ID。",
+      "expected_output": "updated_at 不证明本周活动；只消费已经按创建时间或 effective in-period source Event 选入的 facts。只有当前 audience knowledge collection 中的 Knowledge ID 可作 evidence，来源或 personal facts 中的 ID 不会隐式进入 allowlist",
+      "files": []
+    },
+    {
+      "id": 16,
+      "prompt": "查看 2026-W31 已有周报的上报版，不要重生成。",
+      "expected_output": "使用只读 report export --week 2026-W31 --audience reportable --format markdown；不运行 report facts，不调用 report write，不读取或改写受管 Report，也不触发重生成",
       "files": []
     }
   ]

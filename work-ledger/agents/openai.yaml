@@ -1,4 +1,4 @@
 interface:
   display_name: "Work Ledger"
-  short_description: "Operate the standalone Obsidian work-ledger CLI safely"
-  default_prompt: "Use $work-ledger to verify the standalone CLI and perform a deterministic ledger operation."
+  short_description: "Operate Project, Task, Event, and Knowledge safely"
+  default_prompt: "Use $work-ledger to verify the CLI and perform an exact ledger or Knowledge operation."

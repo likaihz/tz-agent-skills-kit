@@ -33,8 +33,8 @@
     },
     {
       "id": 6,
-      "prompt": "机器上没有 work-ledger，可以装生产 PyPI 的精确版本 0.10.0，也有 TestPyPI 候选和本地已验证 wheel；准备好后继续写流水。",
-      "expected_output": "在 runtime 完成验证前停止业务写入并转交 skill-setup；按 setup reference 接受生产 PyPI 的精确版本或用户提供的已验证本地产物，拒绝将 TestPyPI 用于正常安装，完成 version、protocol、capabilities 和临时 Vault smoke test 后才继续写入",
+      "prompt": "机器上没有 work-ledger，可以装生产 PyPI 的精确版本 0.11.0，也有 TestPyPI 候选和本地已验证 wheel；准备好后继续写流水。",
+      "expected_output": "在 runtime 完成验证前停止业务写入并转交 skill-setup；按 setup reference 接受生产 PyPI 的精确版本 0.11.0 或用户提供的已验证本地产物，拒绝将 TestPyPI 用于正常安装，完成 version、protocol、knowledge_documents capabilities 和临时 schema 5 Vault smoke test 后才继续写入",
       "files": []
     },
     {
@@ -64,19 +64,49 @@
     {
       "id": 11,
       "prompt": "把 2026-W31 的个人周报直接从 Vault 读出来，去掉那些标签后给我复制。",
-      "expected_output": "要求 CLI 0.8、report.export 和 clean_report_export，显式使用 personal audience 并先提示可能含私密内容；导出 digest-valid 的干净投影，不直接读取或改写受管 Report 文件",
+      "expected_output": "要求 CLI >=0.11、report.export 和 clean_report_export，显式使用 personal audience 并先提示可能含私密内容；导出 digest-valid 的干净投影，不直接读取或改写受管 Report 文件",
       "files": []
     },
     {
       "id": 12,
       "prompt": "给 weekly-report 读取事实包，需要把子任务合并成完整工作流。",
-      "expected_output": "要求 CLI >=0.9 和 rich_report_facts；分别读取 personal/reportable facts，使用可见 Project/Task body、parent 和 context_task_ids 提供工作流上下文，但不把仅作上下文的祖先误写成本周活动",
+      "expected_output": "要求 CLI >=0.11、rich_report_facts 和 knowledge_documents；分别读取 personal/reportable facts，使用可见 Project/Task/Knowledge body、parent 和 context_task_ids 提供工作流上下文，但不把仅作上下文的祖先误写成本周活动",
       "files": []
     },
     {
       "id": 13,
       "prompt": "新建一个项目，我没有说可见性；再在里面建任务和记录事件。",
-      "expected_output": "要求 CLI >=0.10 和 reportable_project_default；project.create 省略 visibility 时项目保存为 reportable，Task 和 Event 复制父级有效可见性；不修改 Inbox 或任何已有 private 对象",
+      "expected_output": "要求 CLI >=0.11、reportable_project_default 和 knowledge_documents；project.create 省略 visibility 时项目保存为 reportable，Task 和 Event 复制父级有效可见性；不修改 Inbox 或任何已有 private 对象",
+      "files": []
+    },
+    {
+      "id": 14,
+      "prompt": "用一次原子 apply 先记录一条 idea 流水，再创建一篇以它为来源的 draft technical_note。",
+      "expected_output": "要求 CLI >=0.11、protocol 1 与 knowledge_documents；request schema_version 仍为 1，先用 event.add 声明唯一 ref，再由后续 knowledge.create 的 source_event_refs 引用该 backward typed ref；使用绝对 request file、一个 operation_id 和一次提交，任一失败则全部回滚",
+      "files": []
+    },
+    {
+      "id": 15,
+      "prompt": "把 Knowledge 标题改得更清楚，顺便把文件名也改成新标题。",
+      "expected_output": "先 knowledge show 取得 expected_revision；只提交 knowledge.update changes.title，拒绝修改 immutable slug/path 或直接移动 Vault 文件；标题改变但既有 slug/path 稳定",
+      "files": []
+    },
+    {
+      "id": 16,
+      "prompt": "把关联 private Project 的 Knowledge 声明成 reportable，直接降级成 private 继续即可。",
+      "expected_output": "拒绝静默降级、提升或部分提交；reportable Knowledge 的 Project 和全部 source Event 必须形成 reportable effective visibility closure，否则整笔请求返回 VISIBILITY_CONFLICT，由用户显式修改依赖或声明",
+      "files": []
+    },
+    {
+      "id": 17,
+      "prompt": "schema 4 Vault 的 Work/Knowledge 里已有几篇普通 Markdown，迁移到 5 时自动导入。",
+      "expected_output": "先 migrate plan --to 5；schema 4 的 Work/Knowledge 中任意 .md（含嵌套或大小写变体）都按排序相对路径返回 MIGRATION_CONFLICT 且零写入，不解析、导入、重编号或覆盖；只有无 Markdown 时按精确 plan_digest 执行 4->5-knowledge-documents",
+      "files": []
+    },
+    {
+      "id": 18,
+      "prompt": "Knowledge 的来源流水都被 compensation 抑制了，自动归档这篇文档吧。",
+      "expected_output": "保持 Knowledge 可读且不自动归档；knowledge show 通过 suppressed_source_event_ids 暴露 origin IDs，doctor 返回 KNOWLEDGE_SOURCE_SUPPRESSED warning 和 Knowledge ID，提示用户显式审阅或替换来源",
       "files": []
     }
   ]
