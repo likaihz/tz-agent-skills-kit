@@ -1,4 +1,4 @@
 interface:
   display_name: "Weekly Report"
-  short_description: "Synthesize evidence-backed reports from ledger facts"
-  default_prompt: "Use $weekly-report to synthesize personal and reportable reports from Event and Knowledge facts."
+  short_description: "Create structured, evidence-backed weekly reports"
+  default_prompt: "Use $weekly-report to write a three-part weekly report with a one-sentence summary, structured progress, and evidence-backed reflections."

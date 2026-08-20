@@ -16,50 +16,72 @@
 Use this main structure without a report title:
 
 ```markdown
-**本周进展：**
+**一句话总结：**
 
-（1）完成或推进某个工作流……
+本周围绕一个核心目标取得最重要的结果或阶段变化。
   <!-- evidence: task-...,event-... -->
 
-**下周计划：**
+**本周进展：**
 
-（1）完成某个目标……
-  <!-- evidence: task-... -->
+（1）**工作流：** ……；**结果/阶段：** ……；**关键推进：** ……；**验证/影响：** ……；**风险/下一步：** ……
+  <!-- evidence: task-...,event-... -->
+
+**本周思考：**
+
+（1）围绕……，本周进一步意识到……，这也提示……。
+  <!-- evidence: event-...,knowledge-... -->
 ```
 
-Each numbered item is one physical Markdown paragraph followed immediately by its evidence marker. Use consecutive full-width numbering. Prefer 3–6 progress items and 2–4 plan items only when facts support them. An empty required section contains `无已记录事项。` without numbering or evidence.
+Use exactly these three headings and no report title or fourth section.
+
+The summary is exactly one non-list sentence in one physical paragraph, ending with one sentence-final `。`, `！`, or `？`. It states the most important supported outcome or stage change instead of compressing several bullets with semicolons. Follow it immediately with one evidence marker. If the audience has no usable facts, write `本周无已记录的有效进展。`; for an empty reportable package write `本周无已标记为可上报的事项。`. Empty-summary placeholders need no evidence.
+
+Each progress or thought item is one physical Markdown paragraph followed immediately by its evidence marker. Use consecutive full-width numbering independently within each numbered section. Prefer 3–6 progress items and 1–3 thought items only when facts support them. An empty progress section contains `无已记录事项。`; an empty thought section contains `本周无已记录的灵感或洞察。`. Empty placeholders have no numbering or evidence.
+
+Progress items use labeled clauses rather than nested Markdown bullets, so one evidence marker covers the complete item. `工作流`, `结果/阶段`, and `关键推进` are the normal core. Include `验证/影响` and `风险/下一步` only when the facts explicitly support them; omit unsupported labels rather than writing filler such as “暂无”.
+
+Thought items are polished, natural reflection paragraphs without labels such as `灵感（待验证）`, `洞察`, `来源/触发`, or `启发`. Smooth out ledger-style wording and connect the trigger, reflection, and implication when facts support them. Preserve the source meaning and degree of certainty: a possibility or hypothesis must remain tentative even though the final prose does not expose its Event type.
 
 ## Personal report
 
-Use the shared `本周进展` and `下周计划` narrative. Include private workstreams, decisions, risks, diagnostics, and unclassified work only when useful to the owner. When diagnostics do not fit a workstream, append an optional `**内部补充：**` section after the shared narrative. Retain useful Obsidian links.
+Use exactly the shared three-section narrative. Include private workstreams and private `idea`/`insight` Events only when useful to the owner. Fold a relevant decision, risk, or diagnostic into its progress item; omit unrelated diagnostics rather than appending another heading. Retain useful Obsidian links.
 
 ## Reportable report
 
-Use exactly the two shared headings and no others. Use only the reportable facts package. Emphasize supported outcomes, scope, mechanisms, verification, and next steps; omit personal diagnostics and inbox events. Place a decision or risk in the workstream item it affects instead of creating another section. If the package is empty, place `本周无已标记为可上报的事项。` under `本周进展`.
+Use exactly the three shared headings and no others. Draft every section independently from the reportable facts package. Emphasize supported outcomes, scope, mechanisms, verification, and useful reportable insights; omit personal diagnostics and inbox Events. Never reveal or count private thoughts that were excluded. If the package is empty, use the reportable empty summary plus the standard empty progress and thought placeholders.
 
 ## Synthesis
 
-Before writing, build an internal evidence map grouped by Project and workstream. Use Project, Task, Event, and Knowledge bodies plus `context_task_ids`, parent links, and Knowledge source Event links to understand scope. A workstream may span one parent Task, related child Tasks, several Events, and related Knowledge that describe the same delivered capability or resolved problem. Knowledge is fact material, not a fixed Knowledge section.
+Before writing, build two internal maps for the current audience:
+
+1. A progress evidence map grouped by Project and workstream. Use Project, Task, Event, and Knowledge bodies plus `context_task_ids`, parent links, and Knowledge source Event links to understand scope.
+2. A thought candidate map whose entry points are the exact Events listed in `derived.idea_event_ids` and `derived.insight_event_ids`. Join optional Knowledge only when its effective source chain links it to one of those Events.
+
+A workstream may span one parent Task, related child Tasks, several Events, and related Knowledge that describe the same delivered capability or resolved problem. Knowledge is fact material, not a fixed section.
 
 For each workstream:
 
 1. Identify the supported problem or target.
 2. Merge implementation and investigation Events that led to the same result.
 3. Prefer the latest verified result over superseded progress statements.
-4. Add supported verification, decision, risk, or next step from Event bodies and transitions.
+4. Fill the structured progress clauses from supported scope, mechanism, verification, decision, risk, or next-step facts; omit absent clauses.
 5. Merge a Knowledge body with its effective source Event in that same workstream; avoid repeating the same claim as separate Event and Knowledge items.
 6. Write the smallest number of numbered items that still preserves meaningful context.
 
-A strong item starts with an outcome or stage conclusion and usually connects two or more supported elements: scope, action or mechanism, verification, decision, risk, or next step. Keep all facts for that workstream in the same item. If facts support only one element, state only that element; never pad with invented impact.
+A strong progress item starts with an outcome or stage conclusion and usually connects two or more supported elements: scope, action or mechanism, verification, decision, risk, or next step. Keep all facts for that workstream in the same item. If facts support only one element, state only that element; never pad with invented impact.
+
+After progress synthesis, select only the most useful thought candidates. Rewrite Event bodies and linked Knowledge into fluent reflection prose rather than copying titles, summaries, or internal type names. Preserve meaning and epistemic strength while polishing: express a tentative source as a possibility or question in natural language, and an established learning as a supported reflection. If the same evidence supports both an operational result and a learning, make the progress item describe what changed and the thought item describe the reusable principle; do not repeat the same sentence.
 
 Do not:
 
 - use a Task title or Event summary unchanged as the final item;
 - use a Knowledge title unchanged as the final item;
 - present draft Knowledge as finished work or a stable conclusion; qualify it as “草稿” or “在研”;
-- create a fixed Knowledge section instead of merging the material into its workstream;
+- create a fixed Knowledge section or use Knowledge without a qualifying `idea`/`insight` source as a thought candidate;
 - turn each Event into a separate chronological item;
-- repeat the same workstream in an overview, outcome, progress, decision, or risk section;
+- repeat the same operational claim in the summary, progress, and thought sections;
+- treat a `progress`, `result`, `decision`, or `note` Event as a thought solely to fill the section;
+- present an `idea` as an established conclusion, decision, delivery, or commitment;
 - claim impact, adoption, completion, or commitments absent from the facts package.
 
 ## Clean export
@@ -75,16 +97,17 @@ Use `report export` for a copyable projection:
 
 ## Evidence
 
-Place a marker immediately after each factual numbered item:
+Place a marker immediately after the factual summary sentence and each factual numbered item:
 
 ```markdown
 （1）完成 work-ledger 状态机与事务实现。[[Work/Tasks/完成 work-ledger|完成 work-ledger]]
   <!-- evidence: task-...,event-... -->
 ```
 
-- Completed results cite a result event or task with a done transition.
+- The one-sentence summary cites the evidence for its central claim.
+- Completed results cite a result Event or Task with a done transition.
 - Blockers cite a blocker event or blocked task.
-- Next-week items cite an ID from `next_week_task_ids`.
+- Thought items cite at least one exact `idea` or `insight` Event from the current audience's derived ID sets. Cite linked Knowledge only when that exact Knowledge ID is present in the same facts package.
 - `（1）`, `(1)`, and `1.` items are all validated by the CLI, but authored reports use full-width `（1）` numbering.
 - Section placeholders need no evidence and must not use a numbered prefix.
 - Never cite an ID absent from the current audience's facts package.
@@ -97,11 +120,11 @@ Place a marker immediately after each factual numbered item:
 - Draft Knowledge requires qualified wording such as “草稿” or “在研”; it does not establish completion, publication, or a stable conclusion.
 - A date-precision event has no known exact time.
 - A task completed and reopened within the week is not a completed result at period end.
-- A due date without next-week `planned_for` is not a commitment.
-- Compare personal and reportable `next_week_task_ids` only to detect a visibility gap. Never reuse personal prose in the reportable draft, derive reportable prose from the personal package, or reveal omitted private Knowledge titles, bodies, relationships, or diagnostics.
-- A project start or end date does not by itself prove progress, completion, impact, or a next-week commitment.
+- A due date or `next_week_task_ids` membership does not require a standalone plan section or prove a commitment.
+- Never reuse personal prose in the reportable draft, derive reportable prose from the personal package, or reveal omitted private Event/Knowledge titles, bodies, relationships, counts, or diagnostics.
+- A project start or end date does not by itself prove progress, completion, impact, or a commitment.
 - Reportable prose must not reveal the existence, title, relationship, or diagnostics of private objects.
 
 ## Scheduled behavior
 
-The intended schedule is Friday 21:00 in Asia/Shanghai. A wakeup calls `report due` across the configured eight-week lookback so missed weeks can be backfilled. Scheduled runs do not wait for ambiguity or visibility decisions, never promote objects, and never send reports automatically. Report omitted next-week plan counts for later review without exposing their private content.
+The intended schedule is Friday 21:00 in Asia/Shanghai. A wakeup calls `report due` across the configured eight-week lookback so missed weeks can be backfilled. Scheduled runs do not wait for ambiguity or visibility decisions, never promote objects, and never send reports automatically. They use the same three-section shell and leave unsupported thoughts empty rather than inventing reflection.

@@ -51,7 +51,7 @@
     },
     {
       "id": 9,
-      "prompt": "更新 work-ledger，让 weekly-report 能按完整工作流生成两段式周报。",
+      "prompt": "更新 work-ledger，让 weekly-report 能按完整工作流生成一句话总结、本周进展和本周思考三段式周报。",
       "expected_output": "先满足 work-ledger CLI >=0.11.0,<1.0.0、protocol 1、schema 5、knowledge.list/knowledge.show 和 knowledge_documents，再将 weekly-report outcome 加上 report.facts 和 rich_report_facts；在临时 schema 5 Vault 验证可见 Project/Task/Event/Knowledge facts、父级 context_task_ids、Knowledge evidence 和编号项 evidence 拒绝后再切换入口，不迁移或改写真实 Vault",
       "files": []
     },

@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "写一下本周周报，个人版和给主管的版本都要。",
-      "expected_output": "要求 CLI >=0.11、rich_report_facts 和 knowledge_documents，独立请求 personal/reportable facts；按工作流生成“本周进展／下周计划”主体及紧邻编号项的 evidence markers，并通过一次 report.write 保存两版",
+      "expected_output": "要求 CLI >=0.11、rich_report_facts 和 knowledge_documents，独立请求 personal/reportable facts；两版都严格生成“一句话总结／本周进展／本周思考”三段，一句话总结只写一个有 evidence 的句子，本周进展按工作流使用结果/阶段、关键推进及有事实才写的验证/影响或风险/下一步，本周思考只精选 idea/insight，并通过一次 report.write 保存两版",
       "files": []
     },
     {
@@ -34,13 +34,13 @@
     {
       "id": 6,
       "prompt": "这周同一个任务连续记了实现、联调、修复和测试通过四条流水，直接帮我写周报。",
-      "expected_output": "按项目、父级任务和工作流合并重复过程，以最新验证结果收束；使用 Project/Task/Event body 中已有的上下文和验证信息，合成一个包含结论、范围、机制和验证的编号项",
+      "expected_output": "按项目、父级任务和工作流合并重复过程，以最新验证结果收束；在一个编号项中用工作流、结果/阶段、关键推进和有事实才写的验证/影响字段表达，不把四条流水逐项抄写",
       "files": []
     },
     {
       "id": 7,
       "prompt": "周报里直接把 task 标题和 event summary 列出来就行。",
-      "expected_output": "不把任务标题或事件摘要原样当作成稿；在不编造的前提下按工作流综合结果或阶段结论、范围、机制、验证及相关风险，证据不足时保持简洁",
+      "expected_output": "不把任务标题或事件摘要原样当作成稿；在不编造的前提下按工作流综合为带结果/阶段、关键推进和可选验证/影响、风险/下一步字段的进展项，证据不足时省略字段而非填充套话",
       "files": []
     },
     {
@@ -51,14 +51,14 @@
     },
     {
       "id": 9,
-      "prompt": "上报版按我平时的格式写：本周进展和下周计划，每项用（1）（2），不要再拆概览、成果、决策和风险。",
-      "expected_output": "上报版不写周次标题，只使用加粗的“本周进展：”“下周计划：”两个标题；每个工作流使用连续全角编号，决策和风险并入相关事项，空章节不编号且不凑数",
+      "prompt": "上报版按固定三段写：一句话总结、本周进展、本周思考；进展要结构化，思考从 idea 和 insight 里挑。",
+      "expected_output": "上报版不写周次标题，只使用加粗的“一句话总结：”“本周进展：”“本周思考：”三个标题；总结恰好一个句子并带 evidence，进展按工作流使用结果/阶段和关键推进等标签，本周思考从 reportable 的 idea_event_ids/insight_event_ids 精选，润色成自然文字且不显示 Event 类型标签",
       "files": []
     },
     {
       "id": 10,
-      "prompt": "个人事实里有两个下周任务，但上报事实里没有，直接帮我补到给主管的版本。",
-      "expected_output": "只比较 personal/reportable 的 next_week_task_ids 来识别可见性缺口；不复制 private 标题或文案、不自动提升，交互场景请求用户检查可见性，定时场景留空并报告待复核数量",
+      "prompt": "facts 里有三条 progress、两条 idea 和一条 insight，按时间顺序全塞进本周进展。",
+      "expected_output": "不按事件时间线罗列；将 progress 按工作流合并进结构化本周进展，idea 和 insight 只作为本周思考候选精选，Agent 润色成自然思考且不显示灵感、洞察等类型标签，两个章节独立编号并附 evidence",
       "files": []
     },
     {
@@ -95,6 +95,30 @@
       "id": 16,
       "prompt": "查看 2026-W31 已有周报的上报版，不要重生成。",
       "expected_output": "使用只读 report export --week 2026-W31 --audience reportable --format markdown；不运行 report facts，不调用 report write，不读取或改写受管 Report，也不触发重生成",
+      "files": []
+    },
+    {
+      "id": 17,
+      "prompt": "一句话总结里把三个项目各写一句，信息完整一点。",
+      "expected_output": "拒绝把一句话总结扩成多句或用分号伪装清单；只选择最重要且有事实支持的结果或阶段变化，写成一个句子的非列表段落、一个句末标点，并紧邻 evidence marker，其余内容进入本周进展",
+      "files": []
+    },
+    {
+      "id": 18,
+      "prompt": "这条 idea 写得很成熟，直接当成本周形成的结论放进本周思考。",
+      "expected_output": "不显示灵感或洞察等 Event 类型标签；Agent 将素材润色成自然思考，同时保持原意和确定程度，用可能性或假设语气表达而不包装成结论、决策或承诺，并引用当前 audience 的准确 Event evidence",
+      "files": []
+    },
+    {
+      "id": 19,
+      "prompt": "这周只有 progress 和 result，没有 idea 或 insight，也帮我凑两条本周思考。",
+      "expected_output": "不把 progress/result/decision/note 冒充思考，也不编造反思；本周思考写“本周无已记录的灵感或洞察。”且不编号、不附 evidence",
+      "files": []
+    },
+    {
+      "id": 20,
+      "prompt": "个人版有一条很好的 private insight，上报版里不要提名字，只说本周有一个重要洞察。",
+      "expected_output": "拒绝泄露或计数被 reportable facts 排除的 private insight；上报版从独立 reportable idea_event_ids/insight_event_ids 起草，没有候选时使用空思考占位，不复用 personal prose",
       "files": []
     }
   ]
