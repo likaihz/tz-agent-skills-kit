@@ -1,0 +1,71 @@
+{
+  "skill_name": "knowledge-base",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "把两个明确的来源 event-20260810-001 和 event-20260810-004 沉淀成一篇技术笔记。",
+      "expected_output": "解析并审阅两个 source Event，选择 technical_note 灵活模板；未另行指定时使用 draft 和 private，并通过一次 knowledge.create 提交两个规范来源 ID",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "记录一个新 idea，并在同一次提交里创建以它为来源的 draft Knowledge。",
+      "expected_output": "提交 one atomic apply：event.add 在前并定义 typed ref，knowledge.create 在后通过 source_event_refs 使用 backward typed ref；不拆分提交",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "用名为‘缓存策略’的 Event 做来源；现在有两个同名候选，而且选哪个会改变正文结论。",
+      "expected_output": "只询问 source Event 的歧义，因为候选会改变 document meaning；不静默选择，也不在确认前提交 mutation",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "这篇已经整理完成，请定稿，但正文还是空的。",
+      "expected_output": "‘定稿’可授权 stable，但 stable 要求非空正文；拒绝 empty body 的稳定化，不生成占位内容规避校验",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "在 reportable Project 下新建一篇对比文档，我没有指定可见性。",
+      "expected_output": "可见性保持 private，不继承 reportable Project；仅在用户明确请求 reportable 时，才从只读 Knowledge、Project 和 effective source chain 结果手工汇总用户可见 exposure preview 并确认。不调用 visibility preview --type knowledge，正常 Knowledge create/update 不发送 exposure_digest；closure 无效则 VISIBILITY_CONFLICT fail closed",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "更新 Knowledge 的标题、状态、来源、Project 和可见性。",
+      "expected_output": "先 knowledge show 读取响应字段 revision，并把该值复制到 mutation 字段 expected_revision；标题更新保持 immutable slug/path，status、完整 sources、Project、visibility 变更随同非空 reason 在一次 knowledge.update 中提交",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "把这篇 archived Knowledge 恢复为 stable。",
+      "expected_output": "拒绝 archived -> stable；只恢复到 draft，并使用当前 revision 与非空 reason，后续 stable 需另一次明确且正文非空的更新",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "来源 Event 有 correction，另一个来源被 compensation suppressed；请整理这篇 Knowledge。",
+      "expected_output": "correction source 解析并保存 origin Event ID；保留 suppressed origin，返回 KNOWLEDGE_SOURCE_SUPPRESSED 告警且不自动归档，来源变更交给用户明确决定",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "把《缓存策略》更新后归档；如果它已经归档，就恢复后再更新。库里有两个模糊匹配，我没给 ID。",
+      "expected_output": "先运行 resolve --type knowledge --query；恢复时增加 --status archived。只直接接受 ID 或 exact title/slug；fuzzy/ambiguous 候选必须展示并询问用户，在选定稳定 ID 前不提交 mutation",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "把这份个人项目交接说明归档到知识库，保留原来的 Markdown 章节。",
+      "expected_output": "要求 schema 7、knowledge_kind_document 和 knowledge_kind_memo，选择 document 而非 note/technical_note；关联明确 Project，保留已有章节并只移除重复 canonical H1，默认 draft/private，且不把‘归档到知识库’误设为 archived lifecycle",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "整理一份我的云资源和订阅续费备忘录。",
+      "expected_output": "选择 memo 而非 note/document，默认 draft/private，以 Overview/Entries/Verification 维护事实清单；把有截止日期的行动保留为 Task，不保存密码、token、私钥或完整支付凭据，只保留脱敏标识或外部秘密管理器引用",
+      "files": []
+    }
+  ]
+}

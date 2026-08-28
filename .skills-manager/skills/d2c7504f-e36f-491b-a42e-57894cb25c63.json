@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "d2c7504f-e36f-491b-a42e-57894cb25c63",
+  "path": "knowledge-base",
+  "path_key": "knowledge-base",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "git",
+    "ref": "git@github.com:likaihz/tz-agent-harness.git",
+    "subpath": "skills/knowledge-base",
+    "branch": null
+  }
+}

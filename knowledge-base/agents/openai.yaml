@@ -1,0 +1,4 @@
+interface:
+  display_name: "Knowledge Base"
+  short_description: "Capture and curate durable knowledge and project documents"
+  default_prompt: "Use $knowledge-base to create or update durable Knowledge, including structured project documents, safely."
