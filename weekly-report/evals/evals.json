@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "写一下本周周报，个人版和给主管的版本都要。",
-      "expected_output": "要求 CLI >=0.11、rich_report_facts 和 knowledge_documents，独立请求 personal/reportable facts；两版都严格生成“一句话总结／本周进展／本周思考”三段，一句话总结只写一个有 evidence 的句子，本周进展按工作流使用结果/阶段、关键推进及有事实才写的验证/影响或风险/下一步，本周思考只精选 idea/insight，并通过一次 report.write 保存两版",
+      "expected_output": "要求 CLI >=0.11、rich_report_facts、knowledge_documents 和 knowledge_kind_document，独立请求 personal/reportable facts；两版都严格生成“一句话总结／本周进展／本周思考”三段，一句话总结只写一个有 evidence 的句子，本周进展按工作流使用结果/阶段、关键推进及有事实才写的验证/影响或风险/下一步，本周思考只精选 idea/insight，并通过一次 report.write 保存两版",
       "files": []
     },
     {

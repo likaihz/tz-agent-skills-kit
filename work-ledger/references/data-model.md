@@ -19,7 +19,7 @@
 
 Project and task IDs never change and remain in controlled frontmatter. Each creation title is permanent and projects to a portable, readable Obsidian filename; the CLI rejects a rename or a filename collision. Task note names are globally unique because all tasks share one directory. Visible relationships use Obsidian wikilinks with aliases, while event metadata stores stable IDs. `project-inbox` is the protected private `Inbox.md` project for unclassified work.
 
-Vault schema 5 records this path, hierarchy, and Knowledge contract in `Work/.work-ledger.json`. Vault schema 1 used project and task ID filenames; schema 2 used readable project filenames but retained task ID filenames; schema 3 used readable filenames but stored both project and parent links on child Tasks; schema 4 introduced inherited child projects but did not manage Knowledge. All older schemas require a planned forward migration before business operations.
+Vault schema 6 records this path, hierarchy, and Knowledge contract in `Work/.work-ledger.json`. Vault schema 1 used project and task ID filenames; schema 2 used readable project filenames but retained task ID filenames; schema 3 used readable filenames but stored both project and parent links on child Tasks; schema 4 introduced inherited child projects but did not manage Knowledge; schema 5 introduced Knowledge with five kinds but not `document`. All older schemas require a planned forward migration before business operations.
 
 Projects have nullable `start_date` and `end_date` ISO dates. Either boundary may be absent; when both exist, `start_date` must be on or before `end_date`. The range is descriptive and inclusive: it does not archive a project automatically or reject tasks and events outside the range. `project-inbox` always has both boundaries unset. Vaults created by CLI 0.2.x may omit these fields and are read as `null`.
 
@@ -57,7 +57,7 @@ Correction appends a new event with a complete replacement view and preserves th
 
 ## Knowledge
 
-Knowledge synthesizes origin Events without replacing the Journal or creating Events implicitly. Kinds are `research`, `comparison`, `technical_note`, `essay`, and `note`; statuses are `draft`, `stable`, and `archived`. Each item has a stable ID, immutable slug/path, editable title/body/tags, optional Project, canonical source Event IDs, declared and effective visibility, timestamps, and revision.
+Knowledge synthesizes origin Events without replacing the Journal or creating Events implicitly. Kinds are `research`, `comparison`, `technical_note`, `essay`, `document`, and `note`; statuses are `draft`, `stable`, and `archived`. `document` is a structured project artifact kept for durable reference or maintenance; it does not imply lifecycle status `archived`. Each item has a stable ID, immutable slug/path, editable title/body/tags, optional Project, canonical source Event IDs, declared and effective visibility, timestamps, and revision.
 
 Status transitions are draft to stable/archived, stable to draft/archived, and archived to draft. Stable requires a non-empty body. A title update never changes the slug/path. Query and update by ID/revision rather than inferred filename.
 
