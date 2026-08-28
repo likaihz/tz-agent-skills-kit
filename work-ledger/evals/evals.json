@@ -34,7 +34,7 @@
     {
       "id": 6,
       "prompt": "机器上没有 work-ledger，可以装生产 PyPI 的精确版本 0.11.0，也有 TestPyPI 候选和本地已验证 wheel；准备好后继续写流水。",
-      "expected_output": "在 runtime 完成验证前停止业务写入并转交 skill-setup；按 setup reference 接受生产 PyPI 的精确版本或用户提供的已验证本地产物，拒绝将 TestPyPI 用于正常安装，完成 version、protocol、knowledge_documents、knowledge_kind_document capabilities 和临时 schema 6 Vault smoke test 后才继续写入",
+      "expected_output": "在 runtime 完成验证前停止业务写入并转交 skill-setup；按 setup reference 接受生产 PyPI 的精确版本或用户提供的已验证本地产物，拒绝将 TestPyPI 用于正常安装，完成 version、protocol、knowledge_documents、knowledge_kind_document、knowledge_kind_memo capabilities 和临时 schema 7 Vault smoke test 后才继续写入",
       "files": []
     },
     {
@@ -70,19 +70,19 @@
     {
       "id": 12,
       "prompt": "给 weekly-report 读取事实包，需要把子任务合并成完整工作流。",
-      "expected_output": "要求 CLI >=0.11、rich_report_facts、knowledge_documents 和 knowledge_kind_document；分别读取 personal/reportable facts，使用可见 Project/Task/Knowledge body、parent 和 context_task_ids 提供工作流上下文，但不把仅作上下文的祖先误写成本周活动",
+      "expected_output": "要求 CLI >=0.11、rich_report_facts、knowledge_documents、knowledge_kind_document 和 knowledge_kind_memo；分别读取 personal/reportable facts，使用可见 Project/Task/Knowledge body、parent 和 context_task_ids 提供工作流上下文，但不把仅作上下文的祖先误写成本周活动",
       "files": []
     },
     {
       "id": 13,
       "prompt": "新建一个项目，我没有说可见性；再在里面建任务和记录事件。",
-      "expected_output": "要求 CLI >=0.11、reportable_project_default、knowledge_documents 和 knowledge_kind_document；project.create 省略 visibility 时项目保存为 reportable，Task 和 Event 复制父级有效可见性；不修改 Inbox 或任何已有 private 对象",
+      "expected_output": "要求 CLI >=0.11、reportable_project_default、knowledge_documents、knowledge_kind_document 和 knowledge_kind_memo；project.create 省略 visibility 时项目保存为 reportable，Task 和 Event 复制父级有效可见性；不修改 Inbox 或任何已有 private 对象",
       "files": []
     },
     {
       "id": 14,
       "prompt": "用一次原子 apply 先记录一条 idea 流水，再创建一篇以它为来源的 draft technical_note。",
-      "expected_output": "要求 CLI >=0.11、protocol 1、knowledge_documents 与 knowledge_kind_document；request schema_version 仍为 1，先用 event.add 声明唯一 ref，再由后续 knowledge.create 的 source_event_refs 引用该 backward typed ref；使用绝对 request file、一个 operation_id 和一次提交，任一失败则全部回滚",
+      "expected_output": "要求 CLI >=0.11、protocol 1、knowledge_documents、knowledge_kind_document 与 knowledge_kind_memo；request schema_version 仍为 1，先用 event.add 声明唯一 ref，再由后续 knowledge.create 的 source_event_refs 引用该 backward typed ref；使用绝对 request file、一个 operation_id 和一次提交，任一失败则全部回滚",
       "files": []
     },
     {
@@ -112,7 +112,7 @@
     {
       "id": 19,
       "prompt": "把 schema 5 Vault 升级到当前版本，里面已有很多 Knowledge 文档。",
-      "expected_output": "先生成 migrate plan --to 6 并确认只包含 5->6-document-knowledge-kind 与 Vault marker；按精确 plan_digest 原子迁移，逐字节保留全部既有 Knowledge，不改 title、slug、body、tags 或来源",
+      "expected_output": "先生成 migrate plan --to 7 并确认只包含 5->6-document-knowledge-kind、6->7-memo-knowledge-kind 与 Vault marker；按精确 plan_digest 原子迁移，逐字节保留全部既有 Knowledge，不改 title、slug、body、tags 或来源",
       "files": []
     }
   ]

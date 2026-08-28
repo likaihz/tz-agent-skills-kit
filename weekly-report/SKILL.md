@@ -15,7 +15,7 @@ For an existing report, require week and explicit audience; use `work-ledger rep
 
 ## Workflow
 
-1. Route through `work-ledger`; require CLI `>=0.11.0,<1.0.0`, protocol 1, Vault schema 6, `rich_report_facts=true`, `knowledge_documents=true`, and `knowledge_kind_document=true`. Use `skill-setup` before facts or writes when incompatible.
+1. Route through `work-ledger`; require CLI `>=0.11.0,<1.0.0`, protocol 1, Vault schema 7, `rich_report_facts=true`, `knowledge_documents=true`, `knowledge_kind_document=true`, and `knowledge_kind_memo=true`. Use `skill-setup` before facts or writes when incompatible.
 2. Determine the ISO week. Scheduled runs first call `report due` and process `missing`, `incomplete_pair`, and `stale_facts`; leave `modified` for user choice.
 3. Run `doctor` and stop the affected week on fatal data or transaction findings.
 4. Request personal and reportable facts independently. Never filter personal facts in the Agent to construct the reportable package.

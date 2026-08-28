@@ -9,7 +9,7 @@
 - Configuration parses and points to one intended absolute Vault.
 - The Vault is a Git repository root on the configured branch.
 - Git identity is available; active mode has a remote, upstream, auto-push, and working authentication.
-- Vault schema 6 is active, child Tasks inherit project membership without redundant Obsidian Graph edges, readable permanent project/task notes and `document` Knowledge are supported, `Inbox.md` and `Work/Knowledge/.gitkeep` exist, `doctor` has no fatal findings, and a safe transaction creates one scoped commit.
+- Vault schema 7 is active, child Tasks inherit project membership without redundant Obsidian Graph edges, readable permanent project/task notes plus `document` and `memo` Knowledge are supported, `Inbox.md` and `Work/Knowledge/.gitkeep` exist, `doctor` has no fatal findings, and a safe transaction creates one scoped commit.
 
 ## Runtime requirements
 
@@ -17,12 +17,12 @@
 - Command: `work-ledger`.
 - CLI version: `>=0.11.0,<1.0.0`.
 - Protocol version: `1`.
-- Probe: `work-ledger version`, followed by `work-ledger capabilities`; require commands `knowledge.list` and `knowledge.show`, plus `features.project_date_range=true`, `features.readable_project_notes=true`, `features.immutable_project_titles=true`, `features.readable_task_notes=true`, `features.immutable_task_titles=true`, `features.inherited_child_projects=true`, `features.reportable_project_default=true`, `features.knowledge_documents=true`, and `features.knowledge_kind_document=true`.
+- Probe: `work-ledger version`, followed by `work-ledger capabilities`; require commands `knowledge.list` and `knowledge.show`, plus `features.project_date_range=true`, `features.readable_project_notes=true`, `features.immutable_project_titles=true`, `features.readable_task_notes=true`, `features.immutable_task_titles=true`, `features.inherited_child_projects=true`, `features.reportable_project_default=true`, `features.knowledge_documents=true`, `features.knowledge_kind_document=true`, and `features.knowledge_kind_memo=true`.
 - The probes must not require configuration, create state, access a Vault, or use the network.
 
-When the requested outcome includes the Work Ledger Obsidian client, additionally require commands `snapshot` and `report.export`, plus `features.read_only_snapshot=true` and `features.clean_report_export=true`. Verify a temporary schema 6 Vault with a body-free `snapshot_schema_version=2` response, stable repeated `snapshot_digest`, a `document` Knowledge projection, and clean Markdown/text export from a generated report. The stable executable must also work from a desktop-app environment that does not load the user's interactive shell. Prefer an isolated-environment console script with an absolute Python shebang, or a stable wrapper that invokes a verified Python 3.11+ interpreter by absolute path. Do not expose a zipapp whose `/usr/bin/env python3` can silently resolve to an older system Python unless that exact entry has passed the desktop-environment probe.
+When the requested outcome includes the Work Ledger Obsidian client, additionally require commands `snapshot` and `report.export`, plus `features.read_only_snapshot=true` and `features.clean_report_export=true`. Verify a temporary schema 7 Vault with a body-free `snapshot_schema_version=3` response, stable repeated `snapshot_digest`, `document` and `memo` Knowledge projections, and clean Markdown/text export from a generated report. The stable executable must also work from a desktop-app environment that does not load the user's interactive shell. Prefer an isolated-environment console script with an absolute Python shebang, or a stable wrapper that invokes a verified Python 3.11+ interpreter by absolute path. Do not expose a zipapp whose `/usr/bin/env python3` can silently resolve to an older system Python unless that exact entry has passed the desktop-environment probe.
 
-When the requested outcome includes `weekly-report`, additionally require command `report.facts` and `features.rich_report_facts=true`. In a temporary schema 6 Vault, verify that facts include visibility-filtered Project, Task, Event, and Knowledge bodies, add the visible ancestor of an event-linked child Task to `derived.context_task_ids`, accept only facts-package IDs as evidence, and reject a full-width numbered factual item without evidence. This outcome does not require a real Vault migration.
+When the requested outcome includes `weekly-report`, additionally require command `report.facts` and `features.rich_report_facts=true`. In a temporary schema 7 Vault, verify that facts include visibility-filtered Project, Task, Event, and Knowledge bodies, add the visible ancestor of an event-linked child Task to `derived.context_task_ids`, accept only facts-package IDs as evidence, and reject a full-width numbered factual item without evidence. This outcome does not require a real Vault migration.
 
 ## Prerequisites
 
@@ -57,17 +57,17 @@ Verify runtime before instance configuration:
 1. Run `--version`, JSON `version`, and `capabilities`.
 2. Compare product, CLI version, protocol, schemas, and required commands with catalog.
 3. Confirm the runtime receipt resolves to the executable that was probed and records the exact production PyPI version or verified local artifact without credentials.
-4. For a new or upgraded runtime, initialize a temporary schema 6 Vault, atomically create an Event plus sourced `document` Knowledge through a backward `source_event_refs` local ref, query it, perform one scoped update using its revision, run `doctor` and `sync`, and preserve no temporary state.
+4. For a new or upgraded runtime, initialize a temporary schema 7 Vault, atomically create an Event plus sourced `document` Knowledge and a private `memo` through a backward `source_event_refs` local ref, query them, perform one scoped update using a revision, run `doctor` and `sync`, and preserve no temporary state.
 5. For an Obsidian client outcome, also probe the stable entry with a minimal desktop-style `PATH`, run `snapshot`, verify Vault identity and schema, confirm Project/Task/Event bodies are absent, repeat the same query to verify a stable digest, and verify that `report export` returns clean Markdown and text without changing the Vault or Git HEAD.
 6. For a weekly-report outcome, verify rich report facts and numbered-item evidence rejection in the temporary Vault without changing the real Vault.
 
-Then verify the intended instance: configuration, Vault root, Vault schema 6, Git branch, identity, remote, upstream, one safe transaction, exact staging, one commit, push state, and the scheduled invocation's absolute executable.
+Then verify the intended instance: configuration, Vault root, Vault schema 7, Git branch, identity, remote, upstream, one safe transaction, exact staging, one commit, push state, and the scheduled invocation's absolute executable.
 
 ## Repair and update
 
 Preserve compatible configuration and Vault data. Repair a drifting receipt, executable, user-level entry, or schedule without recreating the Vault.
 
-Install an upgrade into an isolated location, probe it, and run a temporary Vault smoke test before touching the stable executable or real Vault. For any schema 1–5 Vault, run `migrate plan --to 6`; review path collisions, unmanaged-link risk, every `child_project_migrations` entry, `4->5-knowledge-documents`, and byte-preserving `5->6-document-knowledge-kind`. Any Markdown already under a schema-4 `Work/Knowledge/` is a `MIGRATION_CONFLICT`, not import input. If the plan reports child-project or Knowledge-path conflicts, stop and request an explicit data decision instead of modifying the Vault. Apply only the exact reviewed digest as one Git-backed transaction, then re-run `doctor`. If migration fails before commit, preserve the old schema and restore the old stable executable and receipt.
+Install an upgrade into an isolated location, probe it, and run a temporary Vault smoke test before touching the stable executable or real Vault. For any schema 1–6 Vault, run `migrate plan --to 7`; review path collisions, unmanaged-link risk, every `child_project_migrations` entry, `4->5-knowledge-documents`, byte-preserving `5->6-document-knowledge-kind`, and byte-preserving `6->7-memo-knowledge-kind`. Any Markdown already under a schema-4 `Work/Knowledge/` is a `MIGRATION_CONFLICT`, not import input. If the plan reports child-project or Knowledge-path conflicts, stop and request an explicit data decision instead of modifying the Vault. Apply only the exact reviewed digest as one Git-backed transaction, then re-run `doctor`. If migration fails before commit, preserve the old schema and restore the old stable executable and receipt.
 
 ## Removal impact
 

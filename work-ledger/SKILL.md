@@ -11,7 +11,7 @@ Use the independently distributed CLI as the only writer for managed `Work/` Mar
 
 1. Resolve `work-ledger` from the current execution environment; never derive an executable from this Skill directory.
 2. Run `work-ledger version`. Require `product=work-ledger-cli`, `cli_version>=0.11.0,<1.0.0`, and `protocol_version=1`.
-3. Run `work-ledger capabilities` and require `readable_project_notes`, `immutable_project_titles`, `readable_task_notes`, `immutable_task_titles`, `inherited_child_projects`, `reportable_project_default`, `knowledge_documents=true`, `knowledge_kind_document=true`, plus every feature needed by the request.
+3. Run `work-ledger capabilities` and require `readable_project_notes`, `immutable_project_titles`, `readable_task_notes`, `immutable_task_titles`, `inherited_child_projects`, `reportable_project_default`, `knowledge_documents=true`, `knowledge_kind_document=true`, `knowledge_kind_memo=true`, plus every feature needed by the request.
    For a visualization snapshot, additionally require command `snapshot` and `read_only_snapshot=true`.
    For a clean Report export, additionally require command `report.export` and `clean_report_export=true`.
    For evidence-rich weekly Report generation, additionally require command `report.facts` and `rich_report_facts=true`.

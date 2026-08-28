@@ -28,7 +28,7 @@ work-ledger version
 work-ledger capabilities
 ```
 
-Require product `work-ledger-cli`, CLI version `>=0.11.0,<1.0.0`, protocol version `1`, `features.readable_project_notes=true`, `features.immutable_project_titles=true`, `features.readable_task_notes=true`, `features.immutable_task_titles=true`, `features.inherited_child_projects=true`, `features.reportable_project_default=true`, `features.knowledge_documents=true`, `features.knowledge_kind_document=true`, commands `knowledge.list` and `knowledge.show`, and any capability required by the request. Project date operations require `features.project_date_range=true`; evidence-rich weekly Reports require `features.rich_report_facts=true`. Use `skill-setup` instead of attempting a business operation when any check fails.
+Require product `work-ledger-cli`, CLI version `>=0.11.0,<1.0.0`, protocol version `1`, `features.readable_project_notes=true`, `features.immutable_project_titles=true`, `features.readable_task_notes=true`, `features.immutable_task_titles=true`, `features.inherited_child_projects=true`, `features.reportable_project_default=true`, `features.knowledge_documents=true`, `features.knowledge_kind_document=true`, `features.knowledge_kind_memo=true`, commands `knowledge.list` and `knowledge.show`, and any capability required by the request. Project date operations require `features.project_date_range=true`; evidence-rich weekly Reports require `features.rich_report_facts=true`. Use `skill-setup` instead of attempting a business operation when any check fails.
 
 ## Command surface
 
@@ -181,7 +181,7 @@ Knowledge list excludes archived by default. Repeated kind/status filters are OR
 
 ## Consistent snapshots
 
-Use `snapshot` only for a read-only visualization or navigation client that needs Project, Task, effective Event, Knowledge, and Report summaries from one shared read lock. Require CLI `>=0.11.0,<1.0.0`, command `snapshot`, `features.read_only_snapshot=true`, `features.knowledge_documents=true`, `features.knowledge_kind_document=true`, Vault schema 6, and `snapshot_schema_version=2`.
+Use `snapshot` only for a read-only visualization or navigation client that needs Project, Task, effective Event, Knowledge, and Report summaries from one shared read lock. Require CLI `>=0.11.0,<1.0.0`, command `snapshot`, `features.read_only_snapshot=true`, `features.knowledge_documents=true`, `features.knowledge_kind_document=true`, `features.knowledge_kind_memo=true`, Vault schema 7, and `snapshot_schema_version=3`.
 
 The response includes body-free entities, relative Obsidian paths, child Tasks with their derived `project_id`, immutable Knowledge slug/path, effective visibility, Vault identity, Git HEAD, Work digest, event window, and snapshot digest. Load Project, Task, Event, or Knowledge bodies only with the corresponding `show` command when the user opens that detail.
 
