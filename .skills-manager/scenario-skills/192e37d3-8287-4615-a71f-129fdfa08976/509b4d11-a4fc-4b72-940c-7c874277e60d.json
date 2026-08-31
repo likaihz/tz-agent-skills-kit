@@ -6,6 +6,7 @@
   "tools": {
     "claude_code": true,
     "codex": true,
-    "openclaw": true
+    "openclaw": true,
+    "opencode": true
   }
 }
