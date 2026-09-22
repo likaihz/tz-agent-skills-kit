@@ -5,6 +5,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { ListToolsRequestSchema, CallToolRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import pako from "pako";
 import { routeXml } from "./libavoid-pass.js";
+import { layoutXml } from "./elk-pass.js";
 import { assertPagePath, listPageMeta, readPageXml, writePageXml } from "./pages.js";
 import { spawn } from "child_process";
 import { existsSync, readFileSync, writeFileSync, unlinkSync } from "fs";
@@ -172,6 +173,38 @@ function loadIconSearch()
   }
 
   return iconSearchPromise;
+}
+
+// shared/normalize-model.js (the model repairs the desktop CLI's --normalize
+// also applies), copied into src/ by copy-shared — same local-copy-then-repo
+// import as the other shared helpers. Memoized; pure string in, string out.
+let normalizePromise = null;
+
+function loadNormalize()
+{
+  if (!normalizePromise)
+  {
+    normalizePromise = import("./normalize-model.js")
+      .catch(function() { return import("../../shared/normalize-model.js"); });
+  }
+
+  return normalizePromise;
+}
+
+// shared/mermaid-elk.js (the Mermaid ELK layout selector), copied into src/ by
+// copy-shared like the search helpers — same local-copy-then-repo import so an
+// in-repo run works without the copy. Memoized; pure string helpers, no I/O.
+let mermaidElkPromise = null;
+
+function loadMermaidElk()
+{
+  if (!mermaidElkPromise)
+  {
+    mermaidElkPromise = import("./mermaid-elk.js")
+      .catch(function() { return import("../../shared/mermaid-elk.js"); });
+  }
+
+  return mermaidElkPromise;
 }
 
 // Longest URL the Windows shell opens reliably from a .url file:
@@ -359,12 +392,26 @@ const tools =
           enum: ["auto", "true", "false"],
           description: "Dark mode setting. Default: auto",
         },
+        postLayout:
+        {
+          type: "string",
+          enum: ["elk"],
+          description:
+            "Optional full re-layout (ELK layered flow), applied server-side before the diagram opens. The only value is \"elk\". It PLACES the vertices — your x/y coordinates then only need to express rough direction — and routes the edges as part of the layout. Set it for every directional/hierarchical diagram: flowcharts, process and state diagrams, decision trees, pipelines. Omit it when the layout carries hand-crafted meaning (swimlanes, containers, architecture, UML), which is the usual reason to place cells by hand. Node sizes are kept exactly as you declare them; only positions change (and containers resize around their laid-out children).",
+        },
+        direction:
+        {
+          type: "string",
+          enum: ["vertical", "horizontal"],
+          description:
+            "Flow direction for `postLayout: \"elk\"`: \"vertical\" (top-down, the default) or \"horizontal\" (left-to-right). Only meaningful together with `postLayout`.",
+        },
         routing:
         {
           type: "string",
           enum: ["libavoid"],
           description:
-            "Optional obstacle-avoiding orthogonal edge-routing pass (libavoid), applied server-side before the diagram opens. The only value is \"libavoid\". It keeps your vertex positions and only recomputes the connectors so they run in clean right-angle segments that route AROUND the boxes instead of cutting through them (draw.io's default router draws a straight/simple line with no obstacle avoidance). Set it for hand-placed diagrams where edges would otherwise cross shapes — architecture, network, deployment, UML, floor plans. Omit it for sparse layouts where connectors won't overlap anything.",
+            "Optional obstacle-avoiding orthogonal edge-routing pass (libavoid), applied server-side before the diagram opens. The only value is \"libavoid\". It keeps your vertex positions and only recomputes the connectors so they run in clean right-angle segments that route AROUND the boxes instead of cutting through them (draw.io's default router draws a straight/simple line with no obstacle avoidance). Set it for hand-placed diagrams where edges would otherwise cross shapes — architecture, network, deployment, UML, floor plans. Omit it for sparse layouts where connectors won't overlap anything. Treat `postLayout` and `routing` as alternatives: ELK already routes its own edges, so don't set both.",
         },
       },
       required: ["content"],
@@ -420,6 +467,13 @@ const tools =
           description:
             "The Mermaid.js diagram definition. " +
             "Example: 'graph TD; A-->B; B-->C;'",
+        },
+        postLayout:
+        {
+          type: "string",
+          enum: ["elk"],
+          description:
+            "Optional ELK layered layout for Mermaid FLOWCHARTS. The only value is \"elk\". draw.io's native Mermaid parser does its own layout, but it produces cramped or unbalanced output once the diagram has any structural complexity — request \"elk\" whenever ANY of these holds: >= ~20 nodes, OR >= 3 decision diamonds (`{...}` shapes), OR any feedback/back-edges (an edge pointing back to an earlier node, e.g. an error path looping to a retry), OR >= 3 distinct endpoints. The flow direction follows the flowchart code (`flowchart TD/TB` vs `LR/RL`), so there is no direction field here. Ignored for non-flowchart diagram types (sequence, class, ER, gantt, …), which lay themselves out.",
         },
         lightbox:
         {
@@ -765,12 +819,89 @@ server.setRequestHandler(CallToolRequestSchema, async (request) =>
         };
     }
 
-    // XML only: optional libavoid obstacle-avoiding edge-routing pass before
-    // the diagram is compressed into the URL. routeXml never throws — it
-    // returns the original XML if routing isn't applicable or anything fails.
+    const notes = [];
+
+    // XML: repair the model before any pass sees it — edges to the nearest
+    // common ancestor of their terminals (LLM XML parks them on the layer,
+    // which renders fine but lays out wrong, jgraph/drawio-mcp#64), a
+    // geometry for edges written without one (they don't render at all), and
+    // containers grown around children they would clip. Same repairs as the
+    // desktop CLI's --normalize, and doing them here keeps the layout itself
+    // free of hierarchy side effects. Never throws: the normalizer leaves a
+    // page it can't parse exactly as it was.
+    if (type === "xml")
+    {
+      try
+      {
+        const mod = await loadNormalize();
+
+        content = mod.normalizeDiagram(content).xml;
+      }
+      catch (error)
+      {
+        // Structurally the diagram is still what the LLM sent - open it.
+        console.error("[normalize] skipped: " +
+          (error instanceof Error ? error.message : String(error)));
+      }
+    }
+
+    // XML only: optional server-side passes before the diagram is compressed
+    // into the URL. ELK places the vertices, libavoid only re-routes the
+    // edges — the two are alternatives, but running both is harmless (ELK
+    // first, then the router over its positions).
+
+    if (type === "xml" && args?.postLayout === "elk")
+    {
+      try
+      {
+        content = await layoutXml(content, { direction: args?.direction });
+      }
+      catch (error)
+      {
+        // The layout is the whole point of the request, so say it didn't run
+        // instead of quietly opening an unlaid-out diagram.
+        notes.push("NOTE: the ELK layout pass could not run (" +
+          (error instanceof Error ? error.message : String(error)) +
+          "); the diagram opened with the coordinates you supplied. " +
+          "Retry, or place the cells yourself.");
+      }
+    }
+
     if (type === "xml" && args?.routing === "libavoid")
     {
+      // routeXml never throws - it returns the original XML if routing isn't
+      // applicable or anything fails.
       content = await routeXml(content);
+    }
+
+    // Mermaid: selecting ELK is a text transform on the source — draw.io runs
+    // the layout itself when it converts the Mermaid behind the #create= URL
+    // (EditorUi.isMermaidElkFlowchart -> applyMermaidElkPostPass), so there is
+    // nothing to compute here.
+    if (type === "mermaid" && args?.postLayout === "elk")
+    {
+      try
+      {
+        const mermaidElk = await loadMermaidElk();
+
+        if (mermaidElk.isFlowchartSource(content))
+        {
+          content = mermaidElk.withElkLayout(content);
+        }
+        else
+        {
+          notes.push("NOTE: postLayout only applies to Mermaid flowcharts — " +
+            "ignored for this diagram type (" +
+            (mermaidElk.mermaidDiagramType(content) || "unknown") +
+            "), which lays itself out.");
+        }
+      }
+      catch (error)
+      {
+        notes.push("NOTE: the ELK layout selector could not be applied (" +
+          (error instanceof Error ? error.message : String(error)) +
+          "); the diagram opened with draw.io's default Mermaid layout.");
+      }
     }
 
     const url = generateDrawioUrl(content, type, { lightbox, dark });
@@ -783,7 +914,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) =>
       [
         {
           type: "text",
-          text: `Draw.io Editor URL:\n${url}\n\nThe diagram has been opened in your default browser.`,
+          text: `Draw.io Editor URL:\n${url}\n\nThe diagram has been opened in your default browser.` +
+            (notes.length > 0 ? "\n\n" + notes.join("\n") : ""),
         },
       ],
     };

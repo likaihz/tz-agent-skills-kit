@@ -118,6 +118,27 @@ Enable the server when prompted (or under **Cursor Settings → MCP**), then ask
 
 > **Tip:** Cursor also supports the [MCP Apps](https://modelcontextprotocol.io/docs/extensions/apps) extension, so the hosted [MCP App Server](../mcp-app-server) at `https://mcp.draw.io/mcp` works in Cursor too, rendering diagrams *inline* in chat instead of opening a browser tab. Use this stdio server if you prefer diagrams to open in the full draw.io editor.
 
+### OpenCode
+
+Add the server under the `mcp` key of `opencode.json` in your project root (or `~/.config/opencode/opencode.json` for every project):
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "drawio": {
+      "type": "local",
+      "command": ["npx", "-y", "@drawio/mcp"],
+      "enabled": true
+    }
+  }
+}
+```
+
+The tools are available on the next start; ask the agent to create a diagram and it opens in the draw.io editor in your browser.
+
+> **Tip:** OpenCode also loads the `drawio` *skill* (native `.drawio` files, PNG/SVG/PDF export) without any plugin wrapper — see the [plugins README](../plugins/README.md#opencode-no-plugin-needed).
+
 ### Other MCP Clients
 
 Configure your MCP client to run the server via stdio:
@@ -155,7 +176,13 @@ Opens the draw.io editor with XML content.
 | `content` | string | Yes | Draw.io XML content |
 | `lightbox` | boolean | No | Read-only view mode (default: false) |
 | `dark` | string | No | "auto", "true", or "false" (default: "auto") |
-| `routing` | string | No | `"libavoid"` reroutes connectors around shapes (obstacle-avoiding orthogonal routing) before opening |
+| `postLayout` | string | No | `"elk"` re-lays out the diagram (ELK layered flow) before opening: vertices are placed, edges routed |
+| `direction` | string | No | Flow direction for `postLayout`: `"vertical"` (default) or `"horizontal"` |
+| `routing` | string | No | `"libavoid"` reroutes connectors around shapes (obstacle-avoiding orthogonal routing) before opening, leaving positions untouched |
+
+Every diagram is normalized on the way through, the way the draw.io editor maintains its own model: edges are filed at the nearest common ancestor of their terminals (so you can keep writing `parent="1"` on every edge and containers still lay out correctly), an edge written without a geometry gets one (it would not render otherwise), and a container that would clip a child is grown to fit it. The same repairs the draw.io Desktop CLI applies with `--normalize`.
+
+`postLayout` and `routing` are alternatives: ELK places the vertices *and* routes the edges, libavoid only fixes the connectors of a layout you placed yourself. Both run on the server before the diagram is compressed into the URL; the diagram itself still never leaves your machine (it travels in the URL fragment). The ELK pass loads the `drawio-elk` bundle from the draw.io CDN on first use and caches it per user, so the first layout after an update pays a one-off download.
 
 ### `open_drawio_csv`
 
@@ -176,6 +203,9 @@ Opens the draw.io editor with a Mermaid.js diagram.
 | `content` | string | Yes | Mermaid.js syntax |
 | `lightbox` | boolean | No | Read-only view mode (default: false) |
 | `dark` | string | No | "auto", "true", or "false" (default: "auto") |
+| `postLayout` | string | No | `"elk"` switches a Mermaid **flowchart** to the layered ELK layout (direction still follows the flowchart code). Ignored for other diagram types |
+
+`postLayout` costs nothing here: it selects the layout in the Mermaid source (a `config: { layout: elk }` frontmatter block) and draw.io applies it while converting the diagram — the same result as writing that frontmatter yourself.
 
 ### `search_shapes`
 

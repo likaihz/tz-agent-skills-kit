@@ -73,6 +73,18 @@ The Worker uses **4 sharded Durable Objects** (`MCPSessionManager`) to manage al
 - Do NOT add a new `[[migrations]]` tag unless the DO class name changes — it will cause deploy conflicts
 - The 4-shard routing is done in code via `idFromName("shard-N")`, not via wrangler config
 
+## Clients without an MCP Apps UI
+
+`create_diagram` appends a second text block carrying an `app.diagrams.net/?pv=0&grid=0#create=` URL when the connected client doesn't render the app — a plain MCP client (Codex CLI, a terminal agent, a script) otherwise receives the JSON payload and nothing renders the diagram anywhere. Detection is `clientDeclaresUi()` (the `io.modelcontextprotocol/ui` capability from `getUiCapability`, carrying `RESOURCE_MIME_TYPE`) OR `uiResourceRead`, a per-session flag set when the client actually fetches the `ui://` resource — which covers a host that renders through its own negotiation without declaring the capability.
+
+The block is only ever *appended*: the app reads the FIRST text block (`content.find`), so a host that renders but wasn't detected keeps working, and the wording stays conditional ("if this client doesn't show the diagram inline") so it can't assert something false there. XML goes into the URL as-is, so a requested `postLayout` adds a note saying the link opens the authored coordinates (that pass lives in the app). Mermaid goes in as `type: "mermaid"` and the editor converts + lays it out on open — and a requested `postLayout: "elk"` *does* survive, because it is selected in the source: `withElkLayout` from `shared/mermaid-elk.js` (the canonical copy; the browser-side `withElkRenderer` in the app HTML is the same transform, kept in sync by hand since the self-contained HTML can't import).
+
+## Model normalization
+
+Every XML diagram passes through `normalizeDiagram` (`shared/normalize-model.js`) right after `normalizeDiagramXml`, before the payload reaches the app. It repairs three things generated XML carries: edges parked on the layer although both terminals sit inside one container (they render, but ELK reads an edge's coordinates in the frame of the node containing it, so the connector escapes the container — [#64](https://github.com/jgraph/drawio-mcp/issues/64)), edges written without a geometry (not rendered at all), and containers that would clip a child (grown, never shrunk).
+
+Doing it here rather than inside the layout keeps `postLayout` free of hierarchy side effects, and the corrected diagram is what the viewer renders, what "Open in draw.io" exports, and what the fallback URL carries. The implementation is `MxGraph.normalizeModel` in `shared/mx-model.js` — a port of drawio-dev's `Graph.normalizeModel`, i.e. the desktop CLI's `--normalize` — driven over the XML by `shared/mx-xml.js`; idempotent, and it rewrites nothing else.
+
 ## MCP Apps SDK Patterns
 
 - `registerAppTool` `inputSchema` uses Zod shapes (`{ key: z.string() }`), not JSON Schema objects
@@ -151,3 +163,7 @@ npm run build:worker   # Generate generated-html.js
 npm run dev:worker     # Wrangler local dev (port 8787)
 npm run deploy         # Build + deploy to Cloudflare Workers
 ```
+
+## Docker
+
+`Dockerfile` packages the Node.js entry. It must be built from the **repository root** (`docker build -f mcp-app-server/Dockerfile -t drawio-mcp-app .`) because `src/index.js` reads `../../shared/*.md` and `../../shape-search/search-index.json` at startup and `src/shared.js` imports `../../shared/*.js` — a build context of just this directory cannot see them. The root `.dockerignore` trims the context to what the `COPY` lines need (no `node_modules`, `.git`, `public/`, or the other packages). `wrangler` is a devDependency and is left out of the image (`npm ci --omit=dev`).

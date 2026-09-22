@@ -58,9 +58,28 @@ Click the button above for one-click install, or add the hosted endpoint manuall
 
 Enable the server when prompted (or under **Cursor Settings → MCP**), then ask the Agent to create a diagram.
 
+### Using with OpenCode
+
+[OpenCode](https://opencode.ai) connects to the hosted endpoint as a remote MCP server. Add it under the `mcp` key of `opencode.json` in your project root (or `~/.config/opencode/opencode.json` for every project):
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "drawio": {
+      "type": "remote",
+      "url": "https://mcp.draw.io/mcp",
+      "enabled": true
+    }
+  }
+}
+```
+
+OpenCode has no MCP Apps UI, so nothing renders inline: `create_diagram` detects that and returns an `app.diagrams.net` link that opens the diagram in the editor instead. If you would rather have diagrams open in your browser directly (and also author them as Mermaid or CSV), use the stdio [`@drawio/mcp`](../mcp-tool-server/README.md#opencode) tool server.
+
 ## Self-Hosting
 
-If you prefer to run your own instance, you can use Node.js or deploy to Cloudflare Workers.
+If you prefer to run your own instance, you can use Node.js, Docker, or deploy to Cloudflare Workers.
 
 ### Installation
 
@@ -78,6 +97,17 @@ npm start
 ```
 
 The server listens on `http://localhost:3001/mcp` by default. Set the `PORT` environment variable to change the port.
+
+### Running (Docker)
+
+The [`Dockerfile`](Dockerfile) packages the same Node.js server. Build it from the **repository root**, not from this directory — at startup the server reads the shared references and the shape index from the sibling `shared/` and `shape-search/` directories:
+
+```bash
+docker build -f mcp-app-server/Dockerfile -t drawio-mcp-app .
+docker run --rm -p 3001:3001 drawio-mcp-app
+```
+
+The endpoint is `http://localhost:3001/mcp`, as with `npm start`. Pass `-e PORT=8080 -p 8080:8080` to change the port, and `-e DRAWIO_ICON_SERVICE_URL=off` to keep `search_shapes` from querying the draw.io icon service (see [Data Residency & Offline Use](../README.md#data-residency--offline-use)).
 
 ### Connecting to Claude.ai
 

@@ -13,7 +13,7 @@ This repository offers four approaches for integrating draw.io with AI assistant
 | **Requires installation** | No (hosted at `mcp.draw.io`) | Yes (npm package) | One-line plugin install (draw.io Desktop only for PNG/SVG/PDF export) | No — just paste instructions |
 | **Supports XML, CSV, Mermaid** | XML only | ✅ All three | XML only (native format) | ✅ All three |
 | **Editable in draw.io** | Via "Open in draw.io" button | ✅ Directly | ✅ Directly | Via link |
-| **Works with** | Claude.ai, VS Code, Cursor, any MCP Apps host | Claude Desktop, Cursor, any MCP client | Claude Code, Codex CLI, GitHub Copilot | Claude.ai (with Projects) |
+| **Works with** | Claude.ai, VS Code, Cursor, any MCP Apps host | Claude Desktop, Cursor, OpenCode, any MCP client | Claude Code, Codex CLI, GitHub Copilot, OpenCode | Claude.ai (with Projects) |
 | **Best for** | Inline previews in chat | Local desktop workflows | Local development workflows | Quick setup, no install needed |
 
 ---
@@ -28,9 +28,9 @@ The official hosted endpoint is available at:
 https://mcp.draw.io/mcp
 ```
 
-Add this URL as a remote MCP server in Claude.ai, Cursor, or any MCP Apps-compatible host — no installation required. In Cursor (≥ 2.6), diagrams render inline in the Agent chat ([one-click install](https://cursor.com/en/install-mcp?name=drawio&config=eyJ1cmwiOiJodHRwczovL21jcC5kcmF3LmlvL21jcCJ9)); on older builds, use the stdio [`@drawio/mcp`](mcp-tool-server/README.md) tool server instead.
+Add this URL as a remote MCP server in Claude.ai, Cursor, or any MCP Apps-compatible host — no installation required. On Claude.ai, draw.io is also listed in the [connector directory](https://claude.ai/directory/pending-draw-io) and can be added from there in one click. In Cursor (≥ 2.6), diagrams render inline in the Agent chat ([one-click install](https://cursor.com/en/install-mcp?name=drawio&config=eyJ1cmwiOiJodHRwczovL21jcC5kcmF3LmlvL21jcCJ9)); on older builds, use the stdio [`@drawio/mcp`](mcp-tool-server/README.md) tool server instead.
 
-You can also run the server locally via Node.js or deploy your own instance to Cloudflare Workers.
+You can also run the server locally via Node.js or Docker, or deploy your own instance to Cloudflare Workers.
 
 **Tools:**
 - **`create_diagram`** — Renders draw.io XML as an interactive diagram inline in chat
@@ -48,7 +48,7 @@ The original MCP server that opens diagrams directly in the draw.io editor. Supp
 
 Quick start: `npx @drawio/mcp`
 
-Setup instructions are available for Claude Desktop, Claude Code, VS Code (GitHub Copilot), and Cursor (with one-click install).
+Setup instructions are available for Claude Desktop, Claude Code, VS Code (GitHub Copilot), Cursor (with one-click install), and OpenCode.
 
 **[Full documentation →](mcp-tool-server/README.md)**
 
@@ -82,6 +82,8 @@ copilot plugin install drawio@drawio
 ```
 
 Other Copilot surfaces (VS Code agent mode, the coding agent, code review) load the same skill from a repo's `.github/skills/` directory instead — see the [plugin README](plugins/copilot/README.md).
+
+**OpenCode** needs no plugin at all: it discovers skills in `.opencode/skills/` and `.claude/skills/` (and their `~/` equivalents), so the Claude Code skill folder works as-is — see [OpenCode (no plugin needed)](plugins/README.md#opencode-no-plugin-needed) for the one-line install.
 
 By default, the plugin writes a `.drawio` file and opens it in draw.io. Mention a format in your request to change the output:
 - **png / svg / pdf** — exports using the draw.io desktop CLI with `--embed-diagram`
@@ -147,7 +149,12 @@ requests. To reduce or remove them:
 - **App Server:** build with the `VIEWER_PATH` environment variable to inline the
   viewer instead of loading it from `viewer.diagrams.net`.
 - **Tool Server:** set the `DRAWIO_BASE_URL` environment variable to a self-hosted
-  draw.io instance.
+  draw.io instance. Its two server-side passes also fetch **code** from
+  `viewer.diagrams.net` once per draw.io release and cache it per user: the libavoid
+  routing core (`routing: "libavoid"`, also primed at install time) and the
+  drawio-elk bundle (`postLayout: "elk"`, fetched on first use, overridable with
+  `DRAWIO_ELK_URL`). Not requesting those passes makes no such call; the diagram is
+  never part of one either way.
 - **Assistant Plugins:** the opt-in `url` output mode opens the diagram at
   `app.diagrams.net` (hardcoded — no `DRAWIO_BASE_URL` equivalent). Use the default
   `.drawio` output or local Desktop export instead if you need to avoid that request.
