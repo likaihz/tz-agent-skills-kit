@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "fcb3d90b-5e34-49ee-8b86-a78b89683dcb",
+  "path": "retro",
+  "path_key": "retro",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "git",
+    "ref": "git@github.com:mattpocock/skills.git",
+    "subpath": "skills/in-progress/retro",
+    "branch": null
+  }
+}

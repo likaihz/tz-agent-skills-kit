@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "9612f214-25d7-4466-a6fe-046022330664",
+  "path": "implement",
+  "path_key": "implement",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "git",
+    "ref": "git@github.com:mattpocock/skills.git",
+    "subpath": "skills/engineering/implement",
+    "branch": null
+  }
+}

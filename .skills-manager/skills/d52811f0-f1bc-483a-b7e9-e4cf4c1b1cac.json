@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "d52811f0-f1bc-483a-b7e9-e4cf4c1b1cac",
+  "path": "pr",
+  "path_key": "pr",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "git",
+    "ref": "git@github.com:mattpocock/skills.git",
+    "subpath": "skills/in-progress/pr",
+    "branch": null
+  }
+}

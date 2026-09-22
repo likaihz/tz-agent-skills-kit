@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "313e6b1f-4cc5-45bc-8d6a-5c10aacfd2c2",
+  "path": "implement-spec",
+  "path_key": "implement-spec",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "git",
+    "ref": "git@github.com:mattpocock/skills.git",
+    "subpath": "skills/in-progress/implement-spec",
+    "branch": null
+  }
+}
